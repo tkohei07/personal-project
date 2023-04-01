@@ -10,7 +10,9 @@ func (app *application) registerRoutes(r *gin.Engine) {
     // enable CORS
     // may be better to do this in another file
     r.Use(func(c *gin.Context) {
-        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        // c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        // c.Writer.Header().Set("Access-Control-Allow-Origin", "https://learn-code.ca")
+        c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
         c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
         c.Writer.Header().Set("Access-Control-Allow-Headers", "Access-Control-Allow-Origin, Content-Type")
         if c.Request.Method == "OPTIONS" {
