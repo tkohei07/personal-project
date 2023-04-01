@@ -25,6 +25,16 @@ jobs:
       - name: Start Docker containers
         run: docker-compose up -d
       - name: Run tests
-        run: docker-compose run client npm test
+        run: |
+          docker-compose up -d db
+          docker-compose run --rm -e CI=true client npm test -- --coverage --watchAll=false
+          TEST_EXIT_CODE=$?
+          docker-compose down
+          if [ $TEST_EXIT_CODE -ne 0 ]; then
+            echo "Tests failed"
+            exit 1
+          else
+            echo "Tests passed"
+          fi
       - name: Stop Docker containers
         run: docker-compose down
