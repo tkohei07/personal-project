@@ -38,3 +38,15 @@ jobs:
           fi
       - name: Stop Docker containers
         run: docker-compose down
+
+    merge:
+      needs: test
+      if: ${{ success() }}
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: Merge to main
+          run: git merge --ff-only ${{ github.ref }}
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
