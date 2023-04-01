@@ -33,7 +33,7 @@ const AddMovie = () => {
       body: JSON.stringify(requestBody)
     }
 
-    fetch(`http://localhost:8080/movies`, requestOptions)
+    fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to add movie');
