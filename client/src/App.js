@@ -1,4 +1,4 @@
-import { Link, useNavigate, Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import logo from './logo.svg';
 import './App.css';
@@ -24,7 +24,7 @@ function App() {
   //   </div>
   // );
 
-  const navigate = useNavigate();  
+  // const navigate = useNavigate();  
 
   return (
     // for using bootstrap??
