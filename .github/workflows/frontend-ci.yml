@@ -1,0 +1,31 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker images
+        run: docker-compose build
+      - name: Start Docker containers
+        run: docker-compose up -d
+      - name: Run tests
+        run: |
+          docker-compose up -d db
+          docker-compose run --rm -e CI=true client npm test -- --coverage --watchAll=false
+          TEST_EXIT_CODE=$?
+          docker-compose down
+          if [ $TEST_EXIT_CODE -ne 0 ]; then
+            echo "Tests failed"
+            exit 1
+          else
+            echo "Tests passed"
+          fi
+      - name: Stop Docker containers
+        run: docker-compose down
