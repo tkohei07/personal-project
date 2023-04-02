@@ -9,3 +9,6 @@ RUN apk update && \
     go get -u github.com/jackc/pgx/v4 && \
     go get -u github.com/jackc/pgconn && \
     go get github.com/gin-gonic/gin
+
+RUN apk add --no-cache gcc
+RUN apk add --no-cache libc-dev

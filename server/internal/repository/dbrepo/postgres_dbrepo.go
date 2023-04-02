@@ -21,19 +21,9 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `
-		select
-			id, title, release_date, runtime,
-			mpaa_rating, description, coalesce(image, ''),
-			created_at, updated_at
-		from
-			movies
-		order by
-			title
-	`
 	// query := `
 	// 	select
-	// 		id, title, runtime,
+	// 		id, title, release_date, runtime,
 	// 		mpaa_rating, description, coalesce(image, ''),
 	// 		created_at, updated_at
 	// 	from
@@ -41,6 +31,15 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 	// 	order by
 	// 		title
 	// `
+	query := `
+		select
+			id, title, release_date, runtime,
+			mpaa_rating, description, created_at, updated_at
+		from
+			movies
+		order by
+			title
+	`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -59,7 +58,7 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 			&movie.RunTime,
 			&movie.MPAARating,
 			&movie.Description,
-			&movie.Image,
+			// &movie.Image,
 			&movie.CreatedAt,
 			&movie.UpdatedAt,
 		)
@@ -77,20 +76,20 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	query := `
-		insert into movies
-			(title, release_date, runtime, mpaa_rating, description, image, created_at, updated_at)
-		values
-			($1, $2, $3, $4, $5, $6, $7, $8)
-		returning id
-	`
 	// query := `
 	// 	insert into movies
-	// 		(title, runtime, mpaa_rating, description, image, created_at, updated_at)
+	// 		(title, release_date, runtime, mpaa_rating, description, image, created_at, updated_at)
 	// 	values
-	// 		($1, $2, $3, $4, $5, $6, $7)
+	// 		($1, $2, $3, $4, $5, $6, $7, $8)
 	// 	returning id
 	// `
+	query := `
+		insert into movies
+			(title, release_date, runtime, mpaa_rating, description, created_at, updated_at)
+		values
+			($1, $2, $3, $4, $5, $6, $7)
+		returning id
+	`
 
 	stmt, err := m.DB.PrepareContext(ctx, query)
 	if err != nil {
@@ -106,7 +105,7 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 		movie.RunTime,
 		movie.MPAARating,
 		movie.Description,
-		movie.Image,
+		// movie.Image,
 		time.Now(),
 		time.Now(),
 	).Scan(&id)
