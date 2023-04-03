@@ -12,7 +12,7 @@ jobs:
         run: echo "This is a placeholder job"
   
   merge:
-    needs: [ frontend-ci.front-test ]
+    needs: [ frontend-ci.test ]
     if: ${{ success() }}
     runs-on: ubuntu-latest
     steps:
