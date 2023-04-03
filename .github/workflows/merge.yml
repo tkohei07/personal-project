@@ -5,6 +5,12 @@ on:
     branches: [main]
 
 jobs:
+  dummy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do nothing
+        run: echo "This is a placeholder job"
+  
   merge:
     needs: [ frontend-ci.front-test ]
     if: ${{ success() }}
