@@ -1,9 +1,6 @@
 name: Merge Code
 
 on:
-  push:
-    branches: [main]
-
   workflow_run:
     workflows: [ Frontend Test ]
     types:
