@@ -2,7 +2,7 @@ name: Merge Code
 
 on:
   workflow_run:
-    workflows: [ Frontend Test ]
+    workflows: [Frontend Test]
     types:
       - completed
 
