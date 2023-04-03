@@ -1,0 +1,41 @@
+name: Backend Test
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:latest
+        env:
+          environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: movies
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y golang
+      - name: Start PostgreSQL service
+        run: docker-compose up -d db
+      - name: Run tests
+        run: |
+          docker-compose run --rm server go test ./tests/
+          TEST_EXIT_CODE=$?
+          if [ $TEST_EXIT_CODE -ne 0 ]; then
+            echo "Tests failed"
+            exit 1
+          else
+            echo "Tests passed"
+          fi
+      - name: Stop PostgreSQL service
+        run: docker-compose down db
