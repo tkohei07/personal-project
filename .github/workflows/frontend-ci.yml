@@ -19,8 +19,7 @@ jobs:
       - name: Run tests
         run: |
           docker-compose up -d db
-          # docker-compose run --rm -e CI=true client sh -c "npm install && npm test -- --coverage --watchAll=false"
-          docker-compose run --rm -e CI=true client sh -c "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/lib/node_modules/npm/bin/npm-cli.js && npm install && npm test -- --coverage --watchAll=false"
+          docker-compose run --rm -e CI=true client sh -c "npm install && npm test -- --coverage --watchAll=false"
           TEST_EXIT_CODE=$?
           docker-compose down
           if [ $TEST_EXIT_CODE -ne 0 ]; then
