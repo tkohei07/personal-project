@@ -6,12 +6,9 @@ WORKDIR /usr/src/app
 
 RUN apk update && \
     # apk add --no-cache git bash nodejs npm && \
-    apk add --no-cache git bash && \
+    apk add --no-cache git bash nginx && \
     npm install react-router-dom && \
     npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer
-
-# EXPOSE 80
-# EXPOSE 3000
 
 # CMD ["npm", "start"]
 
@@ -20,10 +17,10 @@ COPY . .
 RUN npm run build
 
 # Use the official Nginx image to serve the built app
-FROM nginx:1.21
+# FROM nginx:1.21
 
 # Copy the built app to Nginx's public directory
-COPY --from=0 /usr/src/app/build /usr/share/nginx/html
+# COPY --from=0 /usr/src/app/build /usr/share/nginx/html
 
 # Expose the Nginx server port
 EXPOSE 80
