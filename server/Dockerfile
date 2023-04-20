@@ -12,3 +12,5 @@ RUN apk update && \
 
 RUN apk add --no-cache gcc
 RUN apk add --no-cache libc-dev
+
+EXPOSE 8080
