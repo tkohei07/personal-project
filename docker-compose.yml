@@ -5,8 +5,11 @@ services:
         command: npm start
         volumes:
             - ./client:/usr/src/app
+        environment:
+            - NODE_ENV=production
         ports:
             - "3000:3000"
+            # - "80:80"
             
     db:
         image: postgres:latest
