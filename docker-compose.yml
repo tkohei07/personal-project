@@ -2,14 +2,17 @@ version: '3'
 services:
     client:
         build: ./client
-        command: npm start
-        volumes:
-            - ./client:/usr/src/app
+        # command: npm start
+        # volumes:
+        #     - ./client:/usr/src/app
+        # command: npm run build
         environment:
             - NODE_ENV=production
         ports:
-            - "3000:3000"
-            # - "80:80"
+            # - "3000:3000"
+            - "80:80"
+        depends_on:
+            - server
             
     db:
         image: postgres:latest
@@ -35,4 +38,4 @@ services:
         command: go run ./cmd/api
         ports:
             - "8080:8080"
-
+        
