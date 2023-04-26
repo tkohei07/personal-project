@@ -1,4 +1,4 @@
-# Personal-Project 2
+# Personal-Project 3
 
 TO-DO
 - Create CI/CD pipeline
