@@ -1,0 +1,21 @@
+FROM golang:1.19-alpine
+
+WORKDIR /usr/local/go/src/app
+
+COPY go.mod go.sum ./
+
+RUN go get -u github.com/jackc/pgx/v4 && \
+    go get -u github.com/jackc/pgconn && \
+    go get github.com/gin-gonic/gin
+
+# may not be necessary
+RUN apk update && apk add --no-cache gcc libc-dev
+
+COPY . .
+
+RUN go build -o ./cmd/api/main ./cmd/api/
+
+EXPOSE 8080
+
+# Run the server binary
+CMD ["./cmd/api/main"]

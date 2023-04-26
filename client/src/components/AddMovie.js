@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 const AddMovie = () => {
   const [movie, setMovie] = useState({
@@ -17,12 +18,14 @@ const AddMovie = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
 
-    const requestBody = movie;
-    // we need to covert the values in JSON for release date (to date)
+    // We need to convert the values in JSON for release date (to date)
     // and for runtime to int
+    const requestBody = {
+      ...movie,
+      release_date: new Date(movie.release_date),
+      runtime: parseInt(movie.runtime, 10),
+    };
 
     requestBody.release_date = new Date(movie.release_date);
     requestBody.runtime = parseInt(movie.runtime, 10);
@@ -48,7 +51,7 @@ const AddMovie = () => {
           description: "",
         });
       })
-      .catch(error => console.error(error));
+      .catch((error) => console.error(error));
   };
 
   return (

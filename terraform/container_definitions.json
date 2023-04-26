@@ -1,0 +1,72 @@
+[
+  {
+    "name": "myapp-nginx",
+    "image": "580481854598.dkr.ecr.us-west-2.amazonaws.com/nginx-react:latest",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/nginx-logs",
+        "awslogs-region": "us-west-2",
+        "awslogs-stream-prefix": "myapp-nginx"
+      }
+    },
+    "dependsOn": [
+      {
+        "containerName": "myapp-backend",
+        "condition": "START"
+      }
+    ],
+    "networkMode": "bridge"
+  },
+  {
+    "name": "myapp-backend",
+    "image": "580481854598.dkr.ecr.us-west-2.amazonaws.com/go:latest",
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 8080,
+        "hostPort": 8080,
+        "protocol": "tcp"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "/ecs/myapp-backend-logs",
+        "awslogs-region": "us-west-2",
+        "awslogs-stream-prefix": "myapp-backend"
+      }
+    },
+    "environment": [
+      {
+        "name": "DB_ENDPOINT",
+        "value": "${db_endpoint}"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "${db_username}"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "${db_password}"
+      },
+      {
+        "name": "APP_ENV",
+        "value": "production"
+      },
+      {
+        "name": "PROD_DSN",
+        "value": "${dsn}"
+      }
+    ],
+    "networkMode": "bridge"
+  }
+]
+

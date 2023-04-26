@@ -4,6 +4,7 @@ import (
 	"app/internal/models"
 	"context"
 	"database/sql"
+	"log"
 	"time"
 )
 
@@ -20,6 +21,24 @@ func (m *PostgresDBRepo) Connection() *sql.DB {
 func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
+
+	// for temporary testing
+	createTableQuery := `
+		CREATE TABLE IF NOT EXISTS movies (
+			id SERIAL PRIMARY KEY,
+			title VARCHAR(512),
+			release_date DATE,
+			runtime INTEGER,
+			mpaa_rating VARCHAR(10),
+			description TEXT,
+			created_at TIMESTAMP WITHOUT TIME ZONE,
+			updated_at TIMESTAMP WITHOUT TIME ZONE
+		)
+	`
+	_, err := m.DB.QueryContext(ctx, createTableQuery)
+	if err != nil {
+		log.Println(err)
+	}
 
 	// query := `
 	// 	select
@@ -98,14 +117,13 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 	defer stmt.Close()
 
 	var id int
-	
+
 	err = stmt.QueryRowContext(ctx,
 		movie.Title,
 		movie.ReleaseDate,
 		movie.RunTime,
 		movie.MPAARating,
 		movie.Description,
-		// movie.Image,
 		time.Now(),
 		time.Now(),
 	).Scan(&id)
@@ -117,4 +135,3 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 
 	return nil
 }
-

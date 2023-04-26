@@ -2,12 +2,28 @@ name: Merge Code
 
 on:
   workflow_run:
-    workflows: [Frontend Test]
+    workflows: [Frontend Test, Backend Test]
     types: [completed]
 
 jobs:
+  wait_for_frontend_test:
+    if: ${{ github.event.workflow_run.name == 'Frontend Test' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if frontend test is successful
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        run: "echo 'Frontend Test failed' && exit 1"
+
+  wait_for_backend_test:
+    if: ${{ github.event.workflow_run.name == 'Backend Test' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if backend test is successful
+        if: ${{ github.event.workflow_run.conclusion != 'success' }}
+        run: "echo 'Backend Test failed' && exit 1"
+
   merge:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: [wait_for_frontend_test, wait_for_backend_test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,3 +32,50 @@ jobs:
         run: git merge --ff-only ${{ github.ref }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+deploy:
+    needs: merge
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ github.event.deployment.environment.ECR_REGISTRY }}
+          region: us-west-2
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./server/Dockerfile.prod
+          push: true
+          tags: ${{ github.event.deployment.environment.ECR_REGISTRY }}/go:${{ github.sha }}
+      
+      - name: Build and push Nginx-React Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./client/Dockerfile.prod
+          push: true
+          tags: ${{ github.event.deployment.environment.ECR_REGISTRY }}/nginx-react:${{ github.sha }}
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.2.0
+
+      - name: Initialize Terraform
+        run: terraform init ./terraform/
+
+      - name: Apply Terraform configuration
+        run: >
+          terraform apply -auto-approve
+          -var="go_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/go:${{ github.sha }}"
+          -var="nginx_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/nginx-react:${{ github.sha }}"
+          ./terraform/
