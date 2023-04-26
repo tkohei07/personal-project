@@ -4,6 +4,10 @@ on:
   push:
     branches-ignore:
       - 'main'
+  workflow_run:
+    workflows: ["Backend Test"]
+    types:
+      - completed
 
 jobs:
   test:
