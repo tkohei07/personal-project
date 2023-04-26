@@ -80,3 +80,8 @@ module "rds" {
   master_username = var.db_username
   master_password = var.db_password
 }
+
+module "github_actions" {
+  source  = "./github_actions"
+  aws_arn = var.aws_arn
+}
