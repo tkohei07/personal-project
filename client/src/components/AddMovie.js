@@ -27,11 +27,21 @@ const AddMovie = () => {
       runtime: parseInt(movie.runtime, 10),
     };
 
-    axios
-      // .post(`/api/movies`, requestBody)
-      .post(`${process.env.REACT_APP_BACKEND}/api/movies`, requestBody)
-      .then((response) => {
-        console.log("Movie added successfully.");
+    requestBody.release_date = new Date(movie.release_date);
+    requestBody.runtime = parseInt(movie.runtime, 10);
+
+    const requestOptions = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(requestBody)
+    }
+
+    fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to add movie');
+        }
+        console.log('Movie added successfully');
         setMovie({
           id: 0,
           title: "",

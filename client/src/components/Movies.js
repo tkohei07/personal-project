@@ -14,17 +14,16 @@ useEffect(() => {
         },
     };
 
-    axios
-        // .get("/api/movies", requestOptions)
-        .get(`${process.env.REACT_APP_BACKEND}/api/movies`, requestOptions)
-        .then((response) => {
-            console.log("Response data:", response.data);
-            setMovies(response.data);
-        })
-        .catch((err) => {
-            console.error("Error during axios request:", err);
-        });
-}, []);
+        fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                setMovies(data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+
+    }, []);
 
   return(
         <div>

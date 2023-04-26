@@ -2,7 +2,6 @@ package main
 
 import (
 	"app/internal/models"
-	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,10 +20,11 @@ func (app *application) registerRoutes(r *gin.Engine) {
 		c.Next()
 	})
 
-	r.GET("/api", app.Home)
-	r.GET("/api/movies", app.AllMovies)
-	r.POST("/api/movies", app.CreateMovie)
+	r.GET("/", app.Home)
 
+	r.GET("/movies", app.AllMovies)
+
+	r.POST("/movies", app.CreateMovie)
 }
 
 // may be better to do these things in another file
@@ -44,8 +44,6 @@ func (app *application) Home(c *gin.Context) {
 }
 
 func (app *application) AllMovies(c *gin.Context) {
-	log.Println("receive movies request.")
-
 	movies, err := app.DB.AllMovies()
 	if err != nil {
 		c.AbortWithError(500, err)
@@ -56,7 +54,6 @@ func (app *application) AllMovies(c *gin.Context) {
 }
 
 func (app *application) CreateMovie(c *gin.Context) {
-	log.Println("receive CreateMovie request.")
 	var movie models.Movie
 	if err := c.BindJSON(&movie); err != nil {
 		c.AbortWithError(400, err)
