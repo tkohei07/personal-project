@@ -21,7 +21,7 @@ resource "aws_iam_role" "github_actions_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRole"
+        Action = ["sts:AssumeRole", "sts:TagSession"]
         Effect = "Allow"
         Principal = {
           AWS = var.aws_arn
@@ -66,7 +66,7 @@ resource "aws_iam_policy" "assume_roles_policy" {
   })
 }
 
-# resource "aws_iam_user_policy_attachment" "terraform_user" {
-#   policy_arn = aws_iam_policy.assume_roles_policy.arn
-#   user       = "terraform"
-# }
+resource "aws_iam_user_policy_attachment" "terraform_user" {
+  policy_arn = aws_iam_policy.assume_roles_policy.arn
+  user       = "terraform"
+}
