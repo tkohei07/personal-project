@@ -44,19 +44,32 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: ${{ env.ECR_REGISTRY }}
+        # with:
+        #   registries: ${{ env.ECR_REGISTRY }}
 
       - name: Print name of ECR
         run : echo "env ecr - ${{ env.ECR_REGISTRY }}"
 
-      - name: Build and push Go Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: ./server/Dockerfile.prod
-          push: true
-          tags: ${{ env.ECR_REGISTRY }}/go:${{ github.sha }}
+      # - name: Build and push Go Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ./server/Dockerfile.prod
+      #     push: true
+      #     tags: ${{ env.ECR_REGISTRY }}/go:${{ github.sha }}
       
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push docker image to Amazon ECR for Go
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: go
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+
       - name: Build and push Nginx-React Docker image
         uses: docker/build-push-action@v2
         with:
