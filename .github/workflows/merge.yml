@@ -23,6 +23,8 @@ jobs:
   deploy:
     # needs: merge
     runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-west-2
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
