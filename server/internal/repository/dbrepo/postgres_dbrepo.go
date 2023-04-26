@@ -4,6 +4,7 @@ import (
 	"app/internal/models"
 	"context"
 	"database/sql"
+	"log"
 	"time"
 )
 
@@ -21,16 +22,24 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	// query := `
-	// 	select
-	// 		id, title, release_date, runtime,
-	// 		mpaa_rating, description, coalesce(image, ''),
-	// 		created_at, updated_at
-	// 	from
-	// 		movies
-	// 	order by
-	// 		title
-	// `
+	// for temporary testing
+	createTableQuery := `
+		CREATE TABLE IF NOT EXISTS movies (
+			id SERIAL PRIMARY KEY,
+			title VARCHAR(512),
+			release_date DATE,
+			runtime INTEGER,
+			mpaa_rating VARCHAR(10),
+			description TEXT,
+			created_at TIMESTAMP WITHOUT TIME ZONE,
+			updated_at TIMESTAMP WITHOUT TIME ZONE
+		)
+	`
+	_, err := m.DB.QueryContext(ctx, createTableQuery)
+	if err != nil {
+		log.Println(err)
+	}
+
 	query := `
 		select
 			id, title, release_date, runtime,
@@ -58,7 +67,6 @@ func (m *PostgresDBRepo) AllMovies() ([]*models.Movie, error) {
 			&movie.RunTime,
 			&movie.MPAARating,
 			&movie.Description,
-			// &movie.Image,
 			&movie.CreatedAt,
 			&movie.UpdatedAt,
 		)
@@ -76,13 +84,6 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
-	// query := `
-	// 	insert into movies
-	// 		(title, release_date, runtime, mpaa_rating, description, image, created_at, updated_at)
-	// 	values
-	// 		($1, $2, $3, $4, $5, $6, $7, $8)
-	// 	returning id
-	// `
 	query := `
 		insert into movies
 			(title, release_date, runtime, mpaa_rating, description, created_at, updated_at)
@@ -98,14 +99,13 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 	defer stmt.Close()
 
 	var id int
-	
+
 	err = stmt.QueryRowContext(ctx,
 		movie.Title,
 		movie.ReleaseDate,
 		movie.RunTime,
 		movie.MPAARating,
 		movie.Description,
-		// movie.Image,
 		time.Now(),
 		time.Now(),
 	).Scan(&id)
@@ -117,4 +117,3 @@ func (m *PostgresDBRepo) CreateMovie(movie *models.Movie) error {
 
 	return nil
 }
-

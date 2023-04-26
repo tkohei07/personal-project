@@ -1,28 +1,30 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Movies = () => {
-  const [movies, setMovies] = useState([]);
-    
-  useEffect( () => {
-        const headers = new Headers();
-        headers.append("Content-Type", "application/json");
+const [movies, setMovies] = useState([]);
 
-        const requestOptions = {
-            method: "GET",
-            headers: headers,
-        }
+useEffect(() => {
+    console.log("REACT_APP_BACKEND:", process.env.REACT_APP_BACKEND); // Added console.log
+    const requestOptions = {
+        method: "GET",
+        headers: {
+        "Content-Type": "application/json",
+        },
+    };
 
-        fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                setMovies(data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-
-    }, []);
+    axios
+        // .get("/api/movies", requestOptions)
+        .get(`${process.env.REACT_APP_BACKEND}/api/movies`, requestOptions)
+        .then((response) => {
+            console.log("Response data:", response.data);
+            setMovies(response.data);
+        })
+        .catch((err) => {
+            console.error("Error during axios request:", err);
+        });
+}, []);
 
   return(
         <div>

@@ -1,52 +1,54 @@
 package main
 
 import (
-    "app/internal/repository"
-    "app/internal/repository/dbrepo"
-    "flag"
-    "fmt"
-    "log"
-    
-    "github.com/gin-gonic/gin"
+	"app/config"
+	"app/internal/repository/dbrepo"
+	"backend/internal/repository"
+
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 const port = 8080
 
 type application struct {
-    DSN    string
-    Domain string
-    DB     repository.DatabaseRepo
+	DSN    string
+	Config config.Config
+	DB     repository.DatabaseRepo
 }
 
 func main() {
-    // set application config
-    var app application
 
-    // read from command line
-    flag.StringVar(&app.DSN, "dsn", "host=db port=5432 user=postgres password=postgres dbname=movies sslmode=disable timezone=UTC connect_timeout=5", "Postgres connection string")
-    flag.Parse()
+	var app application
 
-    // connect to the database
-    conn, err := app.connectToDB()
-    if err != nil {
-        log.Fatal(err)
-    }
-    app.DB = &dbrepo.PostgresDBRepo{DB: conn}
-    defer app.DB.Connection().Close()
+	// Get the environment variable
+	env := os.Getenv("APP_ENV")
 
-    app.Domain = "example.com"
+	// Load configuration based on the environment
+	app.Config = config.LoadConfig(env)
 
-    log.Println("Starting application on port", port)
+	// connect to the database
+	conn, err := app.connectToDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
+	defer app.DB.Connection().Close()
 
-    // create a Gin router instance
-    router := gin.Default()
+	log.Println("Starting application on port", port)
 
-    // register routes
-    app.registerRoutes(router)
+	// create a Gin router instance
+	router := gin.Default()
 
-    // start a web server
-    err = router.Run(fmt.Sprintf(":%d", port))
-    if err != nil {
-        log.Fatal(err)
-    }
+	// register routes
+	app.registerRoutes(router)
+
+	// start a web server
+	err = router.Run(fmt.Sprintf(":%d", port))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
