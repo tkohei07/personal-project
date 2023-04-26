@@ -71,3 +71,4 @@ jobs:
           -var="go_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/go:${{ github.sha }}"
           -var="nginx_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/nginx-react:${{ github.sha }}"
           ./terraform/
+
