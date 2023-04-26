@@ -10,6 +10,10 @@ jobs:
     if: ${{ github.event.workflow_run.name == 'Frontend Test' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Debug information
+        run: |
+          echo "Workflow name: ${{ github.event.workflow_run.name }}"
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
       - name: Check if frontend test is successful
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: "echo 'Frontend Test failed' && exit 1"
@@ -18,6 +22,10 @@ jobs:
     if: ${{ github.event.workflow_run.name == 'Backend Test' }}
     runs-on: ubuntu-latest
     steps:
+      - name: Debug information
+        run: |
+          echo "Workflow name: ${{ github.event.workflow_run.name }}"
+          echo "Conclusion: ${{ github.event.workflow_run.conclusion }}"
       - name: Check if backend test is successful
         if: ${{ github.event.workflow_run.conclusion != 'success' }}
         run: "echo 'Backend Test failed' && exit 1"
