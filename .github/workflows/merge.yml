@@ -61,22 +61,25 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push docker image to Amazon ECR for Go
+      - name: Build and push Go Docker image
+        working-directory: ./server
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: go
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build -f ./server/Dockerfile.prod -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker build -f ./Dockerfile.prod -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Build and push Nginx-React Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./client/Dockerfile.prod
-          push: true
-          tags: ${{ env.ECR_REGISTRY }}/nginx-react:${{ github.sha }}
+        working-directory: ./client
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: nginx-react
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f ./Dockerfile.prod -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
