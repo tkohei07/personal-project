@@ -18,6 +18,8 @@ const AddMovie = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
     // We need to convert the values in JSON for release date (to date)
     // and for runtime to int
