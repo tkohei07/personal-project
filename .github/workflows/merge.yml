@@ -1,21 +1,24 @@
 name: Merge Code
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
 
 jobs:
-  merge:
-    needs: [wait_for_frontend_test, wait_for_backend_test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Merge to main
-        run: git merge --ff-only ${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # merge:
+  #   needs: [wait_for_frontend_test, wait_for_backend_test]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #     - name: Merge to main
+  #       run: git merge --ff-only ${{ github.ref }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: merge
