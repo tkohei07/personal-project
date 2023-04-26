@@ -84,4 +84,7 @@ module "rds" {
 module "github_actions" {
   source  = "./github_actions"
   aws_arn = var.aws_arn
+  task_arn = var.task_arn
+  service_arn = var.service_arn
+  rds_arn = var.rds_arn
 }
