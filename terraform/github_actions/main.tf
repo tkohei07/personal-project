@@ -66,7 +66,7 @@ resource "aws_iam_policy" "assume_roles_policy" {
   })
 }
 
-resource "aws_iam_user_policy_attachment" "terraform_user" {
-  policy_arn = aws_iam_policy.assume_roles_policy.arn
-  user       = "terraform"
-}
+# resource "aws_iam_user_policy_attachment" "terraform_user" {
+#   policy_arn = aws_iam_policy.assume_roles_policy.arn
+#   user       = "terraform"
+# }
