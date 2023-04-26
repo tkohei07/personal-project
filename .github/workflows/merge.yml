@@ -4,9 +4,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   # merge:
@@ -21,7 +21,7 @@ jobs:
   #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    needs: merge
+    # needs: merge
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
