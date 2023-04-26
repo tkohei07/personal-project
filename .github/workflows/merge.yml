@@ -23,6 +23,8 @@ jobs:
   deploy:
     # needs: merge
     runs-on: ubuntu-latest
+    env:
+      ECR_REGISTRY: 580481854598.dkr.ecr.us-west-2.amazonaws.com
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -43,17 +45,17 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          registries: ${{ github.event.deployment.environment.ECR_REGISTRY }}
+          registries: ${{ env.ECR_REGISTRY }}
 
       - name: Print name of ECR
-        run : echo "env ecr - ${{ github.event.deployment.environment.ECR_REGISTRY }}"
+        run : echo "env ecr - ${{ env.ECR_REGISTRY }}"
 
       - name: Build and push Go Docker image
         uses: docker/build-push-action@v2
         with:
           context: ./server/Dockerfile.prod
           push: true
-          tags: ${{ github.event.deployment.environment.ECR_REGISTRY }}/go:${{ github.sha }}
+          tags: ${{ env.ECR_REGISTRY }}/go:${{ github.sha }}
       
       - name: Build and push Nginx-React Docker image
         uses: docker/build-push-action@v2
@@ -61,7 +63,7 @@ jobs:
           context: .
           file: ./client/Dockerfile.prod
           push: true
-          tags: ${{ github.event.deployment.environment.ECR_REGISTRY }}/nginx-react:${{ github.sha }}
+          tags: ${{ env.ECR_REGISTRY }}/nginx-react:${{ github.sha }}
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
@@ -74,7 +76,7 @@ jobs:
       - name: Apply Terraform configuration
         run: >
           terraform apply -auto-approve
-          -var="go_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/go:${{ github.sha }}"
-          -var="nginx_image=${{ github.event.deployment.environment.ECR_REGISTRY }}/nginx-react:${{ github.sha }}"
+          -var="go_image=${{ env.ECR_REGISTRY }}/go:${{ github.sha }}"
+          -var="nginx_image=${{ env.ECR_REGISTRY }}/nginx-react:${{ github.sha }}"
           ./terraform/
 
