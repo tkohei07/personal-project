@@ -45,8 +45,9 @@ jobs:
         with:
           registries: ${{ github.event.deployment.environment.ECR_REGISTRY }}
 
-      - name: Build and push Docker image
+      - name: Build and push Go Docker image
         uses: docker/build-push-action@v2
+        run : echo "env ecr - ${{ github.event.deployment.environment.ECR_REGISTRY }}"
         with:
           context: ./server/Dockerfile.prod
           push: true
