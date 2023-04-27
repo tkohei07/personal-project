@@ -1,18 +1,18 @@
-variable "aws_arn" {
-  type = string
-}
+# variable "aws_arn" {
+#   type = string
+# }
 
-variable "task_arn" {
-  type = string
-}
+# variable "task_arn" {
+#   type = string
+# }
 
-variable "service_arn" {
-  type = string
-}
+# variable "service_arn" {
+#   type = string
+# }
 
-variable "rds_arn" {
-  type = string
-}
+# variable "rds_arn" {
+#   type = string
+# }
 
 resource "aws_iam_role" "github_actions_role" {
   name = "my-github-actions-role"
