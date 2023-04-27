@@ -40,41 +40,6 @@ variable "nginx_image" {
   description = "Docker image for the Nginx-React application"
 }
 
-variable "db_name" {
-  type        = string
-  description = "Name of the database"
-}
-
-variable "db_username" {
-  type        = string
-  description = "Username for the database"
-}
-
-variable "db_password" {
-  type        = string
-  description = "Password for the database"
-}
-
-variable "dsn" {
-  type        = string
-}
-
-variable "aws_arn" {
-  type        = string
-}
-
-variable "task_arn" {
-  type        = string
-}
-
-variable "service_arn" {
-  type        = string
-}
-
-variable "rds_arn" {
-  type        = string
-}
-
 module "network" {
   source = "./network"
 
