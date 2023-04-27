@@ -30,6 +30,16 @@ variable "azs" {
   default = ["us-west-2a", "us-west-2c", "us-west-2d"]
 }
 
+variable "go_image" {
+  type        = string
+  description = "Docker image for the Go application"
+}
+
+variable "nginx_image" {
+  type        = string
+  description = "Docker image for the Nginx-React application"
+}
+
 module "network" {
   source = "./network"
 
@@ -66,6 +76,8 @@ module "nginx" {
   db_password = var.db_password
   db_endpoint = "${module.rds.endpoint}"
   dsn = var.dsn
+  go_image = var.go_image
+  nginx_image = var.nginx_image
 }
 
 module "rds" {

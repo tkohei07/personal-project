@@ -34,6 +34,16 @@ variable "dsn" {
   type = string
 }
 
+variable "go_image" {
+  type        = string
+  description = "Docker image for the Go application"
+}
+
+variable "nginx_image" {
+  type        = string
+  description = "Docker image for the Nginx-React application"
+}
+
 locals {
   name = "${var.name}-nginx"
 }
@@ -89,6 +99,8 @@ data "template_file" "container_definitions" {
     db_username = var.db_username
     db_password = var.db_password
     dsn         = var.dsn
+    go_image    = var.go_image
+    nginx_image = var.nginx_image
   }
 }
 
