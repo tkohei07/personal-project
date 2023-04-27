@@ -97,5 +97,5 @@ jobs:
           terraform apply -auto-approve
           -var="go_image=${{ env.ECR_REGISTRY }}/go:${{ github.sha }}"
           -var="nginx_image=${{ env.ECR_REGISTRY }}/nginx-react:${{ github.sha }}"
-          ./terraform/
+          .
 
