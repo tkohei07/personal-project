@@ -1,7 +1,7 @@
 [
   {
     "name": "myapp-nginx",
-    "image": "580481854598.dkr.ecr.us-west-2.amazonaws.com/nginx-react:latest",
+    "image": "${nginx_image}",
     "portMappings": [
       {
         "containerPort": 80,
@@ -27,7 +27,7 @@
   },
   {
     "name": "myapp-backend",
-    "image": "580481854598.dkr.ecr.us-west-2.amazonaws.com/go:latest",
+    "image": "${go_image}",
     "essential": true,
     "portMappings": [
       {
