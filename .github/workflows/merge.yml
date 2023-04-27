@@ -87,9 +87,11 @@ jobs:
           terraform_version: 1.2.0
 
       - name: Initialize Terraform
-        run: terraform init ./terraform/
+        working-directory: ./terraform
+        run: terraform init
 
       - name: Apply Terraform configuration
+        working-directory: ./terraform
         run: >
           terraform apply -auto-approve
           -var="go_image=${{ env.ECR_REGISTRY }}/go:${{ github.sha }}"
