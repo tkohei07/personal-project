@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/internal/models"
+	"log"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,11 +21,11 @@ func (app *application) registerRoutes(r *gin.Engine) {
 		c.Next()
 	})
 
-	r.GET("/", app.Home)
+	r.GET("/api/", app.Home)
 
-	r.GET("/movies", app.AllMovies)
+	r.GET("/api/movies", app.AllMovies)
 
-	r.POST("/movies", app.CreateMovie)
+	r.POST("/api/movies", app.CreateMovie)
 }
 
 // may be better to do these things in another file
@@ -44,6 +45,7 @@ func (app *application) Home(c *gin.Context) {
 }
 
 func (app *application) AllMovies(c *gin.Context) {
+	log.Println("Receive AllMovies request")
 	movies, err := app.DB.AllMovies()
 	if err != nil {
 		c.AbortWithError(500, err)
