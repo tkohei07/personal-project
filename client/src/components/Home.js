@@ -5,7 +5,7 @@ const Home = () => {
     return(
         <>
         <div className="text-center">
-            <h2>Let's find a movie to watch tonight wit CICD</h2>
+            <h2>Let's find a movie to watch tonight with CI/CD pipeline</h2>
             <hr />
             <Link to="/movies">
                 Movies

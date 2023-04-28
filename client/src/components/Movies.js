@@ -6,7 +6,7 @@ const Movies = () => {
 const [movies, setMovies] = useState([]);
 
 useEffect(() => {
-    console.log("REACT_APP_BACKEND:", process.env.REACT_APP_BACKEND); // Added console.log
+    console.log("REACT_APP_BACKENDDD:", process.env.REACT_APP_BACKEND);
     const requestOptions = {
         method: "GET",
         headers: {
@@ -14,14 +14,14 @@ useEffect(() => {
         },
     };
 
-        fetch(`${process.env.REACT_APP_BACKEND}/movies`, requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-                setMovies(data);
-            })
-            .catch(err => {
-                console.log(err);
-            })
+    fetch(`${process.env.REACT_APP_BACKEND}/api/movies`, requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+            setMovies(data);
+        })
+        .catch(err => {
+            console.log("err:", err);
+        })
 
     }, []);
 

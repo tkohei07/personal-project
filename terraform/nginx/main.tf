@@ -53,12 +53,12 @@ resource "aws_lb_target_group" "this" {
 
   vpc_id = "${var.vpc_id}"
 
-  port        = 80
+  port        = 8081
   target_type = "ip"
   protocol    = "HTTP"
 
   health_check {
-    port = 80
+    port = 8081
   }
 }
 
@@ -106,7 +106,7 @@ data "template_file" "container_definitions" {
 
 resource "aws_ecs_task_definition" "this" {
   family = "${local.name}"
-
+  
   cpu                      = "256"
   memory                   = "512"
   network_mode             = "awsvpc"
@@ -155,8 +155,8 @@ resource "aws_security_group_rule" "this_http" {
 
   type = "ingress"
 
-  from_port   = 80
-  to_port     = 80
+  from_port   = 8081
+  to_port     = 8081
   protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
 }
@@ -182,7 +182,7 @@ resource "aws_ecs_service" "this" {
   load_balancer {
       target_group_arn = "${aws_lb_target_group.this.arn}"
       container_name   = "myapp-nginx"
-      container_port   = "80"
+      container_port   = "8081"
   }
 
   deployment_controller {
