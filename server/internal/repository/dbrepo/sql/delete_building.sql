@@ -1,0 +1,1 @@
+DELETE FROM buildings WHERE id = $1
