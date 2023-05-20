@@ -1,9 +1,9 @@
 package main
 
 import (
-	"app/config"
-	"app/internal/repository/dbrepo"
+	"backend/config"
 	"backend/internal/repository"
+	"backend/internal/repository/dbrepo"
 
 	"fmt"
 	"log"

@@ -5,12 +5,8 @@ services:
         command: npm start
         volumes:
             - ./client:/usr/src/app
-        # command: npm run build
-        # environment:
-        #     - NODE_ENV=production
         ports:
             - "3000:3000"
-            # - "80:80"
         depends_on:
             - server
             
@@ -20,7 +16,7 @@ services:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: movies
+          POSTGRES_DB: buildings
         logging:
           options:
             max-size: 10m
@@ -28,14 +24,16 @@ services:
         ports:
           - "5432:5432"
         volumes:
-          - ./server/sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+          - ./server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         
     server:
         build: ./server
         volumes:
             - ./server:/usr/local/go/src/app
-        command: go run ./cmd/api
+        command: sh -c "go build -gcflags='all=-N -l' -o main ./cmd/api && /go/bin/dlv exec ./main --continue --accept-multiclient --api-version=2 --headless --listen=:40000"
+        # command: go run ./cmd/api
         ports:
             - "8080:8080"
+            - "40000:40000"
         
         

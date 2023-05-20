@@ -1,6 +1,6 @@
 import { Link, Outlet } from 'react-router-dom';
 
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
   //         rel="noopener noreferrer"
   //       >
   //       <Link to="/" className="list-group-item list-group-item-action">Home</Link>
-  //       <Link to="/movies" className="list-group-item list-group-item-action">Movies</Link>
+  //       <Link to="/buildings" className="list-group-item list-group-item-action">Movies</Link>
   //       </a>
   //     </header>
   //   </div>
@@ -31,7 +31,7 @@ function App() {
     <div className="container">
       <div className="row">
         <div className="col">
-          <h1 className="mt-3">Go Watch a Movie!!!</h1>
+          <h1 className="mt-3">Let's find the place where you can study</h1>
         </div>
         <hr className="mb-3"></hr>
       </div>
@@ -43,11 +43,14 @@ function App() {
               <Link to="/" className="list-group-item list-group-item-action">
                 Home
               </Link>
-              <Link to="/movies" className="list-group-item list-group-item-action">
-                Movies
+              <Link to="/buildings" className="list-group-item list-group-item-action">
+                All Buildings
               </Link>
-              <Link to="/add-movie" className="list-group-item list-group-item-action">
-                Add Movie
+              <Link to="/add-building" className="list-group-item list-group-item-action">
+                Add Building
+              </Link>
+              <Link to="/add-hours" className="list-group-item list-group-item-action">
+                Add Hours
               </Link>
             </div>
           </nav>
