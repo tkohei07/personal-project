@@ -16,4 +16,7 @@ type DatabaseRepo interface {
 	UpdateBuilding(id int, building *models.Building) error
 	DeleteBuilding(buildingID int) error
 	DeleteBuildingHours(hourID int) error
+
+	SaveUser(user *models.User) error
+	GetUserByUsername(username string) (*models.User, error)
 }

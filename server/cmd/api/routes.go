@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func (app *application) registerRoutes(r *gin.Engine) {
@@ -35,10 +36,13 @@ func (app *application) registerRoutes(r *gin.Engine) {
 	r.PUT("/api/building/:id", app.UpdateBuilding)
 	r.DELETE("/api/buildings/:id", app.DeleteBuilding)
 	r.DELETE("/api/hours/:id", app.DeleteBuildingHours)
+
+	r.POST("/api/register", app.Register)
+	r.POST("/api/authenticate", app.Authenticate)
+
 }
 
-// may be better to do these things in another file
-// (handlers.go)
+// may be better to do these things in another file (handlers.go)
 func (app *application) Home(c *gin.Context) {
 	var payload = struct {
 		Status  string `json:"status"`
@@ -220,7 +224,6 @@ func (app *application) DeleteBuilding(c *gin.Context) {
 	})
 }
 
-// deleteBuildingHours deletes the building hours for a given building ID
 func (app *application) DeleteBuildingHours(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -246,4 +249,71 @@ func ParseDate(d string) (time.Time, error) {
 func ParseTime(t string) (time.Time, error) {
 	layout := "15:04" // This is a layout that matches the "HH:MM" format
 	return time.Parse(layout, t)
+}
+
+func (app *application) Register(c *gin.Context) {
+	var user models.User
+	if err := c.BindJSON(&user); err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	// Hash the password using bcrypt
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+	user.Password = string(hashedPassword)
+
+	if err := app.DB.SaveUser(&user); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "User registered successfully",
+	})
+}
+
+func (app *application) Authenticate(c *gin.Context) {
+	var user models.User
+	if err := c.BindJSON(&user); err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	storedUser, err := app.DB.GetUserByUsername(user.Username)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Incorrect username or password",
+		})
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(storedUser.Password), []byte(user.Password))
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Incorrect username or password",
+		})
+		return
+	}
+
+	// create a JWT and send it back to the user.
+	token, err := GenerateJWT(storedUser)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Failed to generate token",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Login successful",
+		"token":   token,
+	})
 }
