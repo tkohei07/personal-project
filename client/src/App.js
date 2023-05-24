@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
+import { useUser } from './UserContext';
 
 // import logo from './logo.svg';
 import './App.css';
@@ -26,12 +27,29 @@ function App() {
 
   // const navigate = useNavigate();  
 
+  const { loggedIn, setLoggedIn } = useUser();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLoggedIn(false);
+  };
+
   return (
-    // for using bootstrap??
     <div className="container">
       <div className="row">
         <div className="col">
           <h1 className="mt-3">Let's find the place where you can study</h1>
+          <div className="col text-end">
+            {loggedIn ? (
+              <button onClick={handleLogout}>
+                <span className="badge bg-success">Logout</span>
+              </button>
+            ) : (
+              <Link to="/login">
+                <span className="badge bg-success">Login</span>
+              </Link>
+            )}
+          </div>
         </div>
         <hr className="mb-3"></hr>
       </div>
@@ -46,12 +64,16 @@ function App() {
               <Link to="/buildings" className="list-group-item list-group-item-action">
                 All Buildings
               </Link>
-              <Link to="/add-building" className="list-group-item list-group-item-action">
-                Add Building
-              </Link>
-              <Link to="/add-hours" className="list-group-item list-group-item-action">
-                Add Hours
-              </Link>
+              {loggedIn && (
+                <>
+                  <Link to="/add-building" className="list-group-item list-group-item-action">
+                    Add Building
+                  </Link>
+                  <Link to="/add-hours" className="list-group-item list-group-item-action">
+                    Add Hours
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>

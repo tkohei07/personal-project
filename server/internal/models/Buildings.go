@@ -28,3 +28,9 @@ type BuildingWithHours struct {
 	OpenTime  string `json:"open_time"`
 	CloseTime string `json:"close_time"`
 }
+
+type User struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

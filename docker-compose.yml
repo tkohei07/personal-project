@@ -23,8 +23,8 @@ services:
             max-file: "3"
         ports:
           - "5432:5432"
-        volumes:
-          - ./server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        # volumes:
+        #   - ./server/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
         
     server:
         build: ./server

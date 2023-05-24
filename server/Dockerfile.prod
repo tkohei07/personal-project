@@ -6,7 +6,8 @@ COPY go.mod go.sum ./
 
 RUN go get -u github.com/jackc/pgx/v4 && \
     go get -u github.com/jackc/pgconn && \
-    go get github.com/gin-gonic/gin
+    go get github.com/gin-gonic/gin && \
+    go get -u golang.org/x/crypto/bcrypt
 
 # may not be necessary
 RUN apk update && apk add --no-cache gcc libc-dev

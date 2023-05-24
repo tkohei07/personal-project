@@ -20,6 +20,14 @@ CREATE TABLE IF NOT EXISTS building_hours (
     FOREIGN KEY (building_id) REFERENCES buildings (id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS users (
+    id         SERIAL PRIMARY KEY,
+    username   VARCHAR(255) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- for testing
 INSERT INTO buildings (name, address, link) 
 VALUES 

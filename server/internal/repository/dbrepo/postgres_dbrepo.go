@@ -393,4 +393,69 @@ func (m *PostgresDBRepo) DeleteBuildingHours(hourID int) error {
 	return nil
 }
 
-//
+func (m *PostgresDBRepo) SaveUser(user *models.User) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("create_user.sql")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	var id int
+
+	err = stmt.QueryRowContext(ctx,
+		user.Username,
+		user.Password,
+		time.Now(),
+		time.Now(),
+	).Scan(&id)
+	if err != nil {
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) {
+			if pqErr.Code == "23505" {
+				return fmt.Errorf("a user with the username '%s' already exists", user.Username)
+			}
+		}
+		return err
+	}
+
+	user.ID = id
+
+	return nil
+}
+
+func (m *PostgresDBRepo) GetUserByUsername(username string) (*models.User, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("get_user_by_username.sql")
+	if err != nil {
+		return nil, err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	user := &models.User{}
+
+	err = stmt.QueryRowContext(ctx, username).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Password,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
