@@ -25,12 +25,34 @@ type BuildingHour struct {
 
 type BuildingWithHours struct {
 	Building
-	OpenTime  string `json:"open_time"`
-	CloseTime string `json:"close_time"`
+	OpenTime  string  `json:"open_time"`
+	CloseTime string  `json:"close_time"`
+	AveRating float64 `json:"ave_rating"`
 }
 
 type User struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
+}
+
+type Review struct {
+	ID           int       `json:"id"`
+	BuildingID   string    `json:"buildingId"`
+	BuildingName string    `json:"buildingName"`
+	UserID       int       `json:"userId"`
+	Username     string    `json:"username"`
+	Rating       int       `json:"rating"`
+	Comment      string    `json:"comment"`
+	CreatedAt    time.Time `json:"createdAt"`
+	UpdatedAt    time.Time `json:"updatedAt"`
+}
+
+type Favorite struct {
+	ID           int       `json:"id"`
+	UserID       int       `json:"userId"`
+	BuildingID   int       `json:"buildingId"`
+	BuildingName string    `json:"buildingName"`
+	CreatedAt    time.Time `json:"-"`
+	UpdatedAt    time.Time `json:"-"`
 }

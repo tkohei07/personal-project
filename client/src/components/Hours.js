@@ -13,8 +13,10 @@ const daysOfWeek = [
 
 const Hours = () => {
     const { id } = useParams();
+    const [buildingName, setBuildingName] = useState("");
     const [hours, setHours] = useState([]);
 
+    // Fetch building name
     useEffect(() => {
         const requestOptions = {
             method: "GET",
@@ -22,7 +24,24 @@ const Hours = () => {
                 "Content-Type": "application/json",
             },
         };
+        fetch(`${process.env.REACT_APP_BACKEND}/api/building/${id}`, requestOptions)
+            .then((response) => response.json())
+            .then((data) => {
+                setBuildingName(data.name);
+            })
+            .catch((err) => {
+                console.log("error:", err);
+            });
+    }, [id]);
 
+    // Fetch hours
+    useEffect(() => {
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
         fetch(`${process.env.REACT_APP_BACKEND}/api/hours/${id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
@@ -59,7 +78,7 @@ const Hours = () => {
 
     return(
         <div>
-            <h2>Hours</h2>
+            <h2>Hours: {buildingName}</h2>
             <hr />
             <table className="table table-striped table-hover">
                 <thead>

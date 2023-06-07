@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import Input from "./form/Input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate, useLocation } from "react-router-dom";
 import { useUser } from "../UserContext"; 
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const location = useLocation();
+
+    const [username, setUsername] = useState(location.state?.username || "");
+    const [password, setPassword] = useState(location.state?.password || "");
+    const [message, setMessage] = useState(location.state?.message || "");
     const [error, setError] = useState(null);
 
-    const { setLoggedIn } = useUser();
+
+    const { setLoggedIn, setUserId } = useUser();
 
     const navigate = useNavigate();
 
@@ -50,8 +54,10 @@ const Login = () => {
                 if (data.token) {
                     // Save the JWT in local storage or wherever you want to store it
                     localStorage.setItem('token', data.token);
+                    console.log('data.id:', data.id);
                     console.log('Login successful');
                     setLoggedIn(true);
+                    setUserId(data.id);
                     setError("");
                     // Handle redirection or state change here
                     navigate("/");
@@ -67,6 +73,7 @@ const Login = () => {
 
     return (
         <div>
+            {message && <p>{message}</p>}
             <form onSubmit={handleSubmit}>
                 <Input
                     title="Username"

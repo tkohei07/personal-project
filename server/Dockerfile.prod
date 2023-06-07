@@ -6,11 +6,9 @@ COPY go.mod go.sum ./
 
 RUN go get -u github.com/jackc/pgx/v4 && \
     go get -u github.com/jackc/pgconn && \
+    go get -u golang.org/x/crypto/bcrypt && \
     go get github.com/gin-gonic/gin && \
-    go get -u golang.org/x/crypto/bcrypt
-
-# may not be necessary
-RUN apk update && apk add --no-cache gcc libc-dev
+    apk update && apk add --no-cache gcc libc-dev
 
 COPY . .
 
@@ -18,5 +16,4 @@ RUN go build -o ./cmd/api/main ./cmd/api/
 
 EXPOSE 8080
 
-# Run the server binary
 CMD ["./cmd/api/main"]

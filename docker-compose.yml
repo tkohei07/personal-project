@@ -31,7 +31,6 @@ services:
         volumes:
             - ./server:/usr/local/go/src/app
         command: sh -c "go build -gcflags='all=-N -l' -o main ./cmd/api && /go/bin/dlv exec ./main --continue --accept-multiclient --api-version=2 --headless --listen=:40000"
-        # command: go run ./cmd/api
         ports:
             - "8080:8080"
             - "40000:40000"
