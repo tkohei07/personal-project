@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import Rating from "react-rating";
+import { FaStar } from "react-icons/fa";
 
 function formatTime(timeStr) {
   const [hours, minutes] = timeStr.split(":");
@@ -13,6 +15,7 @@ const Home = () => {
   const [buildings, setBuildings] = useState([]);
   const [search, setSearch] = useState("");
 
+  // Fetch buildings
   useEffect(() => {
     const requestOptions = {
       method: "GET",
@@ -54,6 +57,7 @@ const Home = () => {
           <tr>
             <th>Building</th>
             <th>Today</th>
+            <th>Rating</th>
           </tr>
         </thead>
         <tbody>
@@ -66,13 +70,26 @@ const Home = () => {
                   </Link>
                 </td>
                 <td>{formatTime(m.open_time)} - {formatTime(m.close_time)}</td>
+                <td>
+                  <Rating
+                    initialRating={m.ave_rating}
+                    emptySymbol={<FaStar color="gray" />}
+                    fullSymbol={<FaStar color="gold" />}
+                    readonly
+                  />
+                  <Link to={`/reviews/${m.id}`}>
+                    <button className="btn btn-sm btn-primary ml-2">
+                      more
+                    </button>
+                  </Link>
+                </td>
               </tr>
           ))
           ) : (
             <tr>
               <td colSpan="2">No buildings open today</td>
               </tr>
-              )}
+          )}
         </tbody>
 
       </table>

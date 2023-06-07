@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import AddBuilding from './components/AddBuilding';
 import AddHours from './components/AddHours';
+import AddReview from './components/AddReview';
 import ErrorPage from './components/ErrorPage';
 import Buildings from './components/Buildings';
 import EditBuilding from './components/EditBuilding';
@@ -13,7 +14,10 @@ import Home from './components/Home';
 import Hours from './components/Hours';
 import Login from './components/Login';
 import Register from './components/Register';
+import Reviews from './components/Reviews';
+import FavoriteBuildings from './components/FavoriteBuildings';
 import PrivateRoute from './components/PrivateRoute';
+import YourReviews from './components/YourReviews';
 
 const router = createBrowserRouter([
   {
@@ -54,6 +58,22 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "/favorite-buildings",
+        element: (
+          <PrivateRoute>
+            <FavoriteBuildings />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/your-reviews",
+        element: (
+          <PrivateRoute>
+            <YourReviews />
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/hours/:id",
         element: <Hours />,
       },
@@ -64,6 +84,14 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/add-review/:id",
+        element: <AddReview />,
+      },
+      {
+        path: "/reviews/:id",
+        element: <Reviews />,
       }
     ]
   }

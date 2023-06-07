@@ -2,7 +2,6 @@ package main
 
 import (
 	"backend/internal/models"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -30,12 +29,19 @@ func (app *application) registerRoutes(r *gin.Engine) {
 	r.GET("/api/all-buildings", app.GetAllBuildings)
 	r.GET("/api/buildings", app.GetBuildingsWithTodayHours)
 	r.GET("/api/building/:id", app.GetBuildingByID)
-	r.GET("/api/hours/:id", app.GetBuildingHoursByID)
+	r.GET("/api/hours/:id", app.GetBuildingHoursBuildingByID)
+	r.GET("/api/reviews/:id", app.GetReviewsByBuildingID)
+	r.GET("/api/user/:id/favorites", app.GetFavoritesByUserID)
+	r.GET("/api/user/:id/reviews", app.GetReviewsByUserID)
 	r.POST("/api/add-hours", app.CreateBuildingHours)
+	r.POST("/api/add-review/:id", app.CreateReview)
 	r.POST("/api/buildings", app.CreateBuilding)
+	r.POST("/api/user/:id/favorites", app.CreateFavorite)
 	r.PUT("/api/building/:id", app.UpdateBuilding)
 	r.DELETE("/api/buildings/:id", app.DeleteBuilding)
 	r.DELETE("/api/hours/:id", app.DeleteBuildingHours)
+	r.DELETE("/api/user/:id/favorites", app.DeleteFavorite)
+	r.DELETE("/api/review/:id", app.DeleteReview)
 
 	r.POST("/api/register", app.Register)
 	r.POST("/api/authenticate", app.Authenticate)
@@ -95,20 +101,68 @@ func (app *application) GetBuildingByID(c *gin.Context) {
 	c.JSON(200, building)
 }
 
-func (app *application) GetBuildingHoursByID(c *gin.Context) {
+func (app *application) GetBuildingHoursBuildingByID(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.AbortWithError(400, err)
 		return
 	}
 
-	buildingHours, err := app.DB.GetBuildingHoursByID(id)
+	buildingHours, err := app.DB.GetBuildingHoursBuildingByID(id)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
 	}
 
 	c.JSON(200, buildingHours)
+}
+
+func (app *application) GetReviewsByBuildingID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	reviews, err := app.DB.GetReviewsByBuildingID(id)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, reviews)
+}
+
+func (app *application) GetFavoritesByUserID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	favorites, err := app.DB.GetFavoritesByUserID(id)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, favorites)
+}
+
+func (app *application) GetReviewsByUserID(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	reviews, err := app.DB.GetReviewsByUserID(id)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, reviews)
 }
 
 func (app *application) UpdateBuilding(c *gin.Context) {
@@ -151,6 +205,23 @@ func (app *application) CreateBuilding(c *gin.Context) {
 	c.JSON(201, building)
 }
 
+func (app *application) CreateFavorite(c *gin.Context) {
+	var favorite models.Favorite
+	if err := c.BindJSON(&favorite); err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	if err := app.DB.CreateFavorite(&favorite); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(201, favorite)
+}
+
 func (app *application) CreateBuildingHours(c *gin.Context) {
 	// The format of the JSON input is different from the BuildingHour struct
 	var jsonInput struct {
@@ -165,7 +236,6 @@ func (app *application) CreateBuildingHours(c *gin.Context) {
 		c.AbortWithError(400, err)
 		return
 	}
-	fmt.Println(jsonInput)
 
 	// Parse the StartDate and EndDate
 	startDate, err := ParseDate(jsonInput.StartDateStr)
@@ -207,6 +277,23 @@ func (app *application) CreateBuildingHours(c *gin.Context) {
 	c.JSON(201, building_hour)
 }
 
+func (app *application) CreateReview(c *gin.Context) {
+	var review models.Review
+	if err := c.BindJSON(&review); err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	if err := app.DB.CreateReview(&review); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(201, review)
+}
+
 func (app *application) DeleteBuilding(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -238,6 +325,40 @@ func (app *application) DeleteBuildingHours(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"message": "Building hours deleted successfully",
+	})
+}
+
+func (app *application) DeleteFavorite(c *gin.Context) {
+	var favorite models.Favorite
+	if err := c.BindJSON(&favorite); err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	if err := app.DB.DeleteFavorite(&favorite); err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Favorite deleted successfully",
+	})
+}
+
+func (app *application) DeleteReview(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.AbortWithError(400, err)
+		return
+	}
+
+	if err := app.DB.DeleteReview(id); err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Review deleted successfully",
 	})
 }
 
@@ -315,5 +436,6 @@ func (app *application) Authenticate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
 		"token":   token,
+		"id":      storedUser.ID,
 	})
 }

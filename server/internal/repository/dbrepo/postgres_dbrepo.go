@@ -72,6 +72,7 @@ func (m *PostgresDBRepo) GetBuildingsWithTodayHours() ([]*models.BuildingWithHou
 			&buildingWithHours.UpdatedAt,
 			&buildingWithHours.OpenTime,
 			&buildingWithHours.CloseTime,
+			&buildingWithHours.AveRating,
 		)
 		if err != nil {
 			return nil, err
@@ -147,8 +148,7 @@ func (m *PostgresDBRepo) GetBuildingByID(id int) (*models.Building, error) {
 	return &building, nil
 }
 
-// get building hours by building id
-func (m *PostgresDBRepo) GetBuildingHoursByID(id int) ([]*models.BuildingHour, error) {
+func (m *PostgresDBRepo) GetBuildingHoursBuildingByID(id int) ([]*models.BuildingHour, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -201,6 +201,124 @@ func (m *PostgresDBRepo) GetBuildingHoursByID(id int) ([]*models.BuildingHour, e
 func ParseTime(t string) (time.Time, error) {
 	layout := "15:04:00" // This is a layout that matches the "HH:MM" format
 	return time.Parse(layout, t)
+}
+
+func (m *PostgresDBRepo) GetReviewsByBuildingID(id int) ([]*models.Review, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("get_reviews_by_building_id.sql")
+
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := m.DB.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var reviews []*models.Review
+
+	for rows.Next() {
+		var review models.Review
+		err := rows.Scan(
+			&review.ID,
+			&review.BuildingID,
+			&review.UserID,
+			&review.Username,
+			&review.Rating,
+			&review.Comment,
+			&review.CreatedAt,
+			&review.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		reviews = append(reviews, &review)
+	}
+
+	return reviews, nil
+}
+
+func (m *PostgresDBRepo) GetFavoritesByUserID(id int) ([]*models.Favorite, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("get_favorites_by_user_id.sql")
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := m.DB.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var favorites []*models.Favorite
+
+	for rows.Next() {
+		var favorite models.Favorite
+		err := rows.Scan(
+			&favorite.ID,
+			&favorite.UserID,
+			&favorite.BuildingID,
+			&favorite.BuildingName,
+			&favorite.CreatedAt,
+			&favorite.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		favorites = append(favorites, &favorite)
+	}
+
+	return favorites, nil
+}
+
+func (m *PostgresDBRepo) GetReviewsByUserID(id int) ([]*models.Review, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("get_reviews_by_user_id.sql")
+
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := m.DB.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var reviews []*models.Review
+
+	for rows.Next() {
+		var review models.Review
+		err := rows.Scan(
+			&review.ID,
+			&review.BuildingID,
+			&review.BuildingName,
+			&review.UserID,
+			&review.Username,
+			&review.Rating,
+			&review.Comment,
+			&review.CreatedAt,
+			&review.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		reviews = append(reviews, &review)
+	}
+
+	return reviews, nil
 }
 
 func (m *PostgresDBRepo) CreateBuilding(building *models.Building) error {
@@ -278,6 +396,36 @@ func (m *PostgresDBRepo) CheckOverlap(building_hour *models.BuildingHour) error 
 	return nil
 }
 
+func (m *PostgresDBRepo) CreateFavorite(favorite *models.Favorite) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("create_favorite.sql")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	var id int
+
+	err = stmt.QueryRowContext(ctx,
+		favorite.UserID,
+		favorite.BuildingID,
+	).Scan(&id)
+	if err != nil {
+		return err
+	}
+
+	favorite.ID = id
+
+	return nil
+}
+
 func (m *PostgresDBRepo) CreateBuildingHours(building_hour *models.BuildingHour) error {
 	// Check for overlapping days before creating a new BuildingHour
 	err := m.CheckOverlap(building_hour)
@@ -314,6 +462,40 @@ func (m *PostgresDBRepo) CreateBuildingHours(building_hour *models.BuildingHour)
 	}
 
 	building_hour.ID = id
+
+	return nil
+}
+
+func (m *PostgresDBRepo) CreateReview(review *models.Review) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("create_review.sql")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	var id int
+
+	err = stmt.QueryRowContext(ctx,
+		review.BuildingID,
+		review.UserID,
+		review.Rating,
+		review.Comment,
+		time.Now(),
+		time.Now(),
+	).Scan(&id)
+	if err != nil {
+		return err
+	}
+
+	review.ID = id
 
 	return nil
 }
@@ -386,6 +568,54 @@ func (m *PostgresDBRepo) DeleteBuildingHours(hourID int) error {
 	defer stmt.Close()
 
 	_, err = stmt.ExecContext(ctx, hourID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PostgresDBRepo) DeleteFavorite(favorite *models.Favorite) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("delete_favorite.sql")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, favorite.UserID, favorite.BuildingID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *PostgresDBRepo) DeleteReview(reviewID int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
+	defer cancel()
+
+	query, err := readSQLFile("delete_review.sql")
+	if err != nil {
+		return err
+	}
+
+	stmt, err := m.DB.PrepareContext(ctx, query)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.ExecContext(ctx, reviewID)
 	if err != nil {
 		return err
 	}

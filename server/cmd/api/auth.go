@@ -42,12 +42,14 @@ func GenerateJWT(user *models.User) (string, error) {
 
 	// Declare the token with the algorithm used for signing, and the claims
 	secretKey, err := generateSecretKey(32)
+	if err != nil {
+		return "", err
+	}
 	var jwtKey = []byte(secretKey)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Create the JWT string
 	tokenString, err := token.SignedString(jwtKey)
-
 	if err != nil {
 		return "", err
 	}

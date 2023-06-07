@@ -72,6 +72,12 @@ function App() {
                   <Link to="/add-hours" className="list-group-item list-group-item-action">
                     Add Hours
                   </Link>
+                  <Link to="/favorite-buildings" className="list-group-item list-group-item-action">
+                    Saved Buildings
+                  </Link>
+                  <Link to="/your-reviews" className="list-group-item list-group-item-action">
+                    Your Reviews
+                  </Link>
                 </>
               )}
             </div>

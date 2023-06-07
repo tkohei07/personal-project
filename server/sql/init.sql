@@ -28,6 +28,29 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS user_favorites (
+    id          SERIAL PRIMARY KEY,
+    user_id     INTEGER NOT NULL,
+    building_id INTEGER NOT NULL,
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (building_id) REFERENCES buildings (id) ON DELETE CASCADE,
+    UNIQUE (user_id, building_id)
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id          SERIAL PRIMARY KEY,
+    building_id INTEGER NOT NULL,
+    user_id     INTEGER NOT NULL,
+    rating      INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment     VARCHAR(255),
+    created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (building_id) REFERENCES buildings (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
 -- for testing
 INSERT INTO buildings (name, address, link) 
 VALUES 
@@ -55,3 +78,17 @@ VALUES
 (2, 4, '2023-01-01', '2023-12-31', '09:00:00', '21:00:00'), -- Thursday
 (2, 5, '2023-01-01', '2023-12-31', '09:00:00', '21:00:00'), -- Friday
 (2, 6, '2023-01-01', '2023-12-31', '10:00:00', '18:00:00'); -- Saturday
+
+-- insert users for test
+INSERT INTO users (username, password)
+VALUES
+('test1', 'test1'),
+('test2', 'test2');
+
+-- Reviews
+INSERT INTO reviews (building_id, user_id, rating, comment)
+VALUES
+(1, 1, 5, 'I love this library!'),
+(1, 2, 2, 'I hate this library!'),
+(2, 1, 5, 'I love this library!'),
+(2, 2, 2, 'I hate this library!');

@@ -76,7 +76,7 @@ const Register = () => {
                 setUsername("");
                 setPassword("");
 
-                navigate("/login");
+                navigate("/login", { state: { message: "Registration successful", username: username, password: password } });
             })
             .catch((error) => {
                 setError('Error: ' + error);
