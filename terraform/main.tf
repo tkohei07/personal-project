@@ -78,6 +78,7 @@ module "nginx" {
   dsn = var.dsn
   go_image = var.go_image
   nginx_image = var.nginx_image
+  googlemaps_api_key = var.googlemaps_api_key
 }
 
 module "rds" {

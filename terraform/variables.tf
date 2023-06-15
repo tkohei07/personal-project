@@ -29,3 +29,7 @@ variable "service_arn" {
 variable "rds_arn" {
   type        = string
 }
+
+variable "googlemaps_api_key" {
+  type        = string
+}
