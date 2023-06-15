@@ -61,9 +61,6 @@ function App() {
               <Link to="/" className="list-group-item list-group-item-action">
                 Home
               </Link>
-              <Link to="/buildings" className="list-group-item list-group-item-action">
-                All Buildings
-              </Link>
               {loggedIn && (
                 <>
                   <Link to="/add-building" className="list-group-item list-group-item-action">

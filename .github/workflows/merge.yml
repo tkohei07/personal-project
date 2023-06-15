@@ -4,33 +4,15 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
 
 jobs:
-  # merge:
-  #   needs: [wait_for_frontend_test, wait_for_backend_test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #     - name: Merge to main
-  #       run: git merge --ff-only ${{ github.ref }}
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   deploy:
-    # needs: merge
     runs-on: ubuntu-latest
     env:
       ECR_REGISTRY: 580481854598.dkr.ecr.us-west-2.amazonaws.com
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -41,22 +23,9 @@ jobs:
           aws-region: us-west-2
           role-duration-seconds: 3600
 
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
-        # with:
-        #   registries: ${{ env.ECR_REGISTRY }}
-
       - name: Print name of ECR
         run : echo "env ecr - ${{ env.ECR_REGISTRY }}"
 
-      # - name: Build and push Go Docker image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: ./server/Dockerfile.prod
-      #     push: true
-      #     tags: ${{ env.ECR_REGISTRY }}/go:${{ github.sha }}
-      
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -77,6 +46,7 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: nginx-react
           IMAGE_TAG: ${{ github.sha }}
+          REACT_APP_GOOGLE_MAPS_API_KEY: ${{ secrets.REACT_APP_GOOGLE_MAPS_API_KEY }}
         run: |
           docker build -f ./Dockerfile.prod -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG

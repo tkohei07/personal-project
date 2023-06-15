@@ -9,6 +9,9 @@ const AddBuilding = () => {
     name: "",
     address: "",
     link: "",
+    isComputerRoom: false,
+    isReservableStudyRoom: false,
+    isVendingArea: false,
   });
 
   const navigate = useNavigate();
@@ -16,6 +19,11 @@ const AddBuilding = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setBuilding({ ...building, [name]: value });
+  };
+
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    setBuilding({ ...building, [name]: checked });
   };
 
   const handleSubmit = (event) => {
@@ -30,11 +38,11 @@ const AddBuilding = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(buildingObject)
-    }
+      body: JSON.stringify(buildingObject),
+    };
 
     fetch(`${process.env.REACT_APP_BACKEND}/api/buildings`, requestOptions)
-      .then(async response => {
+      .then(async (response) => {
         const data = await response.json();
 
         if (!response.ok) {
@@ -48,21 +56,24 @@ const AddBuilding = () => {
           id: 0,
           name: "",
           address: "",
-          link: ""
+          link: "",
+          isComputerRoom: false,
+          isReservableStudyRoom: false,
+          isVendingArea: false,
         });
 
         // If the request was successful, clear any previous error
         setError(null);
 
-        // Navigate to the /buildings route
-        navigate("/buildings");
+        navigate("/");
       })
       .catch((error) => {
         console.error(error);
         // Set the error state with the message from the error object
         setError(error.message);
-    });
+      });
   };
+
   return (
     <div>
       <h2>Add Building</h2>
@@ -95,6 +106,45 @@ const AddBuilding = () => {
           value={building.link}
           onChange={handleChange}
         />
+
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            name="isComputerRoom"
+            checked={building.isComputerRoom}
+            onChange={handleCheckboxChange}
+          />
+          <label className="form-check-label" htmlFor="isComputerRoom">
+            Computer Room
+          </label>
+        </div>
+
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            name="isReservableStudyRoom"
+            checked={building.isReservableStudyRoom}
+            onChange={handleCheckboxChange}
+          />
+          <label className="form-check-label" htmlFor="isReservableStudyRoom">
+            Reservable Study Room
+          </label>
+        </div>
+        <div className="form-check">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            name="isVendingArea"
+            checked={building.isVendingArea}
+            onChange={handleCheckboxChange}
+          />
+          <label className="form-check-label" htmlFor="isVendingArea">
+            Vending Area
+          </label>
+        </div>
+
         <button type="submit" className="btn btn-primary">
           Add Building
         </button>

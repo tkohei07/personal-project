@@ -68,6 +68,9 @@ func (m *PostgresDBRepo) GetBuildingsWithTodayHours() ([]*models.BuildingWithHou
 			&buildingWithHours.Name,
 			&buildingWithHours.Address,
 			&buildingWithHours.Link,
+			&buildingWithHours.IsComputerRoom,
+			&buildingWithHours.IsReservableStudyRoom,
+			&buildingWithHours.IsVendingArea,
 			&buildingWithHours.CreatedAt,
 			&buildingWithHours.UpdatedAt,
 			&buildingWithHours.OpenTime,
@@ -78,10 +81,25 @@ func (m *PostgresDBRepo) GetBuildingsWithTodayHours() ([]*models.BuildingWithHou
 			return nil, err
 		}
 
+		if !buildingWithHours.OpenTime.Valid {
+			buildingWithHours.OpenTime.String = convertNullString(buildingWithHours.OpenTime)
+		}
+		if !buildingWithHours.CloseTime.Valid {
+			buildingWithHours.CloseTime.String = convertNullString(buildingWithHours.CloseTime)
+		}
+
 		buildingsWithHours = append(buildingsWithHours, &buildingWithHours)
 	}
 
 	return buildingsWithHours, nil
+}
+
+func convertNullString(nullString sql.NullString) string {
+	if nullString.Valid {
+		return nullString.String
+	} else {
+		return "00:00:00"
+	}
 }
 
 func (m *PostgresDBRepo) GetAllBuildings() ([]*models.Building, error) {
@@ -108,6 +126,9 @@ func (m *PostgresDBRepo) GetAllBuildings() ([]*models.Building, error) {
 			&building.Name,
 			&building.Address,
 			&building.Link,
+			&building.IsComputerRoom,
+			&building.IsReservableStudyRoom,
+			&building.IsVendingArea,
 			&building.CreatedAt,
 			&building.UpdatedAt,
 		)
@@ -138,6 +159,9 @@ func (m *PostgresDBRepo) GetBuildingByID(id int) (*models.Building, error) {
 		&building.Name,
 		&building.Address,
 		&building.Link,
+		&building.IsComputerRoom,
+		&building.IsReservableStudyRoom,
+		&building.IsVendingArea,
 		&building.CreatedAt,
 		&building.UpdatedAt,
 	)
@@ -321,6 +345,7 @@ func (m *PostgresDBRepo) GetReviewsByUserID(id int) ([]*models.Review, error) {
 	return reviews, nil
 }
 
+// TODO
 func (m *PostgresDBRepo) CreateBuilding(building *models.Building) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
@@ -342,6 +367,9 @@ func (m *PostgresDBRepo) CreateBuilding(building *models.Building) error {
 		building.Name,
 		building.Address,
 		building.Link,
+		building.IsComputerRoom,
+		building.IsReservableStudyRoom,
+		building.IsVendingArea,
 		time.Now(),
 		time.Now(),
 	).Scan(&id)
@@ -500,6 +528,7 @@ func (m *PostgresDBRepo) CreateReview(review *models.Review) error {
 	return nil
 }
 
+// TODO
 func (m *PostgresDBRepo) UpdateBuilding(id int, building *models.Building) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
@@ -519,6 +548,9 @@ func (m *PostgresDBRepo) UpdateBuilding(id int, building *models.Building) error
 		building.Name,
 		building.Address,
 		building.Link,
+		building.IsComputerRoom,
+		building.IsReservableStudyRoom,
+		building.IsVendingArea,
 		time.Now(),
 		id,
 	)

@@ -23,6 +23,12 @@
         "condition": "START"
       }
     ],
+    "environment": [
+      {
+        "name": "GOOGLEMAPS_API_KEY",
+        "value": "${googlemaps_api_key}"
+      }
+    ],
     "networkMode": "bridge"
   },
   {

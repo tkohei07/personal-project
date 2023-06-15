@@ -8,7 +8,6 @@ import AddBuilding from './components/AddBuilding';
 import AddHours from './components/AddHours';
 import AddReview from './components/AddReview';
 import ErrorPage from './components/ErrorPage';
-import Buildings from './components/Buildings';
 import EditBuilding from './components/EditBuilding';
 import Home from './components/Home';
 import Hours from './components/Hours';
@@ -28,10 +27,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
-      },
-      {
-        path: "/buildings",
-        element: <Buildings />,
       },
       {
         path: "/buildings/edit/:id",

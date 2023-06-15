@@ -1,14 +1,20 @@
 package models
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type Building struct {
-	ID        int       `json:"id"`
-	Name      string    `json:"name"`
-	Address   string    `json:"address"`
-	Link      string    `json:"link"`
-	CreatedAt time.Time `json:"-"`
-	UpdatedAt time.Time `json:"-"`
+	ID                    int       `json:"id"`
+	Name                  string    `json:"name"`
+	Address               string    `json:"address"`
+	Link                  string    `json:"link"`
+	IsComputerRoom        bool      `json:"isComputerRoom"`
+	IsReservableStudyRoom bool      `json:"isReservableStudyRoom"`
+	IsVendingArea         bool      `json:"isVendingArea"`
+	CreatedAt             time.Time `json:"-"`
+	UpdatedAt             time.Time `json:"-"`
 }
 
 type BuildingHour struct {
@@ -25,9 +31,11 @@ type BuildingHour struct {
 
 type BuildingWithHours struct {
 	Building
-	OpenTime  string  `json:"open_time"`
-	CloseTime string  `json:"close_time"`
-	AveRating float64 `json:"ave_rating"`
+	// OpenTime  string  `json:"open_time"`
+	// CloseTime string  `json:"close_time"`
+	OpenTime  sql.NullString `json:"open_time"`
+	CloseTime sql.NullString `json:"close_time"`
+	AveRating float64        `json:"ave_rating"`
 }
 
 type User struct {
