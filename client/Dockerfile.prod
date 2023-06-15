@@ -4,7 +4,7 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-RUN npm install react-router-dom axios react-icons react-rating
+RUN npm install react-router-dom axios react-icons react-rating @react-google-maps/api
     
 COPY . .
 

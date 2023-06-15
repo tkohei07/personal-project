@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 RUN apk update && \
     apk add --no-cache git bash && \
     npm install react-router-dom && \
-    npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer
-RUN npm install react-rating
-RUN npm install react-icons
+    npm install --save-dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer && \
+    npm install react-rating react-icons
+RUN npm install @react-google-maps/api
+RUN npm install axios

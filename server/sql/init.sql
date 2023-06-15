@@ -3,6 +3,9 @@ CREATE TABLE IF NOT EXISTS buildings (
     name        VARCHAR(255) NOT NULL UNIQUE,
     address     VARCHAR(255) NOT NULL,
     link        VARCHAR(255) NOT NULL,
+    is_computer_room BOOLEAN NOT NULL DEFAULT FALSE,
+    is_reservable_study_room BOOLEAN NOT NULL DEFAULT FALSE,
+    is_vending_area BOOLEAN NOT NULL DEFAULT FALSE,
     created_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -52,10 +55,10 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 -- for testing
-INSERT INTO buildings (name, address, link) 
+INSERT INTO buildings (name, address, link, is_computer_room, is_reservable_study_room, is_vending_area) 
 VALUES 
-    ('Ebling Library', '4220 Chamberlin Hall 1150 University Ave.', 'https://ebling.library.wisc.edu/'),
-    ('Steenbock Library', '550 Babcock Dr.', 'https://www.library.wisc.edu/steenbock/');
+    ('Ebling Library', 'Health Sciences Learning Center 750 Highland Ave. Madison WI 53705', 'https://ebling.library.wisc.edu/', true, false, true),
+    ('Steenbock Library', '550 Babcock Dr. Madison WI 53706', 'https://www.library.wisc.edu/steenbock/', false, true, true);
 
 -- Library 1
 INSERT INTO building_hours (building_id, day_of_week, start_date, end_date, open_time, close_time)

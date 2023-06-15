@@ -9,6 +9,9 @@ const EditBuilding = () => {
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [link, setLink] = useState("");
+    const [isComputerRoom, setIsComputerRoom] = useState(false);
+    const [isReservableStudyRoom, setIsReservableStudyRoom] = useState(false);
+    const [isVendingArea, setIsVendingArea] = useState(false);
     
     const navigate = useNavigate();
 
@@ -27,6 +30,9 @@ const EditBuilding = () => {
                 setName(data.name);
                 setAddress(data.address);
                 setLink(data.link);
+                setIsComputerRoom(data.isComputerRoom);
+                setIsReservableStudyRoom(data.isReservableStudyRoom);
+                setIsVendingArea(data.isVendingArea);
             })
             .catch((err) => {
                 console.log("error:", err);
@@ -45,6 +51,23 @@ const EditBuilding = () => {
         setLink(event.target.value);
     };
 
+    const handleCheckboxChange = (event) => {
+        const { name, checked } = event.target;
+        switch (name) {
+            case "isComputerRoom":
+                setIsComputerRoom(checked);
+                break;
+            case "isReservableStudyRoom":
+                setIsReservableStudyRoom(checked);
+                break;
+            case "isVendingArea":
+                setIsVendingArea(checked);
+                break;
+            default:
+                break;
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -56,7 +79,10 @@ const EditBuilding = () => {
             body: JSON.stringify({
                 name: name,
                 address: address,
-                link: link
+                link: link,
+                isComputerRoom: isComputerRoom,
+                isReservableStudyRoom: isReservableStudyRoom,
+                isVendingArea: isVendingArea,
             }),
         };
 
@@ -66,7 +92,7 @@ const EditBuilding = () => {
                 if (data.error) {
                     setError(`Failed to edit building: ${data.error}`);
                 } else {
-                    navigate(`/buildings/`);
+                    navigate(`/`);
                 }
             })
             .catch((err) => {
@@ -106,14 +132,52 @@ const EditBuilding = () => {
                     value={link}
                     onChange={handleLinkChange}
                 />
-            <button type="submit" className="btn btn-primary">
-                Submit
-            </button>
-        </form>
-    </div>
-);
+
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="isComputerRoom"
+                        checked={isComputerRoom}
+                        onChange={handleCheckboxChange}
+                    />
+                    <label className="form-check-label" htmlFor="isComputerRoom">
+                        Computer Room
+                    </label>
+                </div>
+
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="isReservableStudyRoom"
+                        checked={isReservableStudyRoom}
+                        onChange={handleCheckboxChange}
+                    />
+                    <label className="form-check-label" htmlFor="isReservableStudyRoom">
+                        Reservable Study Room
+                    </label>
+                </div>
+
+                <div className="form-check">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        name="isVendingArea"
+                        checked={isVendingArea}
+                        onChange={handleCheckboxChange}
+                    />
+                    <label className="form-check-label" htmlFor="isVendingArea">
+                        Vending Area
+                    </label>
+                </div>
+                
+                <button type="submit" className="btn btn-primary">
+                    Submit
+                </button>
+            </form>
+        </div>
+    );
 };
 
 export default EditBuilding;
-
-
