@@ -1,33 +1,12 @@
 import { Link, Outlet } from 'react-router-dom';
-import { useUser } from './UserContext';
+import { LoadScript } from "@react-google-maps/api";
 
-// import logo from './logo.svg';
-import './App.css';
+import { useUser } from './contexts/UserContext';
 
 function App() {
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>
-  //         Edit <code>src/App.js</code> and save to reload.
-  //       </p>
-  //       <a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       >
-  //       <Link to="/" className="list-group-item list-group-item-action">Home</Link>
-  //       <Link to="/buildings" className="list-group-item list-group-item-action">Movies</Link>
-  //       </a>
-  //     </header>
-  //   </div>
-  // );
-
-  // const navigate = useNavigate();  
-
   const { loggedIn, setLoggedIn } = useUser();
+
+  const googleMapsApiKey = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -35,6 +14,7 @@ function App() {
   };
 
   return (
+    <LoadScript googleMapsApiKey={googleMapsApiKey}>
     <div className="container">
       <div className="row">
         <div className="col">
@@ -69,11 +49,11 @@ function App() {
                   <Link to="/add-hours" className="list-group-item list-group-item-action">
                     Add Hours
                   </Link>
-                  <Link to="/favorite-buildings" className="list-group-item list-group-item-action">
-                    Saved Buildings
+                  <Link to="/my-favorite-buildings" className="list-group-item list-group-item-action">
+                    My Buildings
                   </Link>
-                  <Link to="/your-reviews" className="list-group-item list-group-item-action">
-                    Your Reviews
+                  <Link to="/my-reviews" className="list-group-item list-group-item-action">
+                    My Reviews
                   </Link>
                 </>
               )}
@@ -85,6 +65,7 @@ function App() {
         </div>
       </div>
     </div>
+    </LoadScript>
   );
 }
 

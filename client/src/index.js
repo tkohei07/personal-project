@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { UserProvider } from "./UserContext";
+import { UserProvider } from "./contexts/UserContext";
 import './index.css';
 import App from './App';
-import AddBuilding from './components/AddBuilding';
-import AddHours from './components/AddHours';
-import AddReview from './components/AddReview';
-import ErrorPage from './components/ErrorPage';
-import EditBuilding from './components/EditBuilding';
-import Home from './components/Home';
-import Hours from './components/Hours';
-import Login from './components/Login';
-import Register from './components/Register';
-import Reviews from './components/Reviews';
-import FavoriteBuildings from './components/FavoriteBuildings';
-import PrivateRoute from './components/PrivateRoute';
-import YourReviews from './components/YourReviews';
+import AddBuilding from './components/building/AddBuilding';
+import AddHours from './components/hours/AddHours';
+import AddReview from './components/review/AddReview';
+import ErrorPage from './components/common/ErrorPage';
+import EditBuilding from './components/building/EditBuilding';
+import Home from './components/common/Home';
+import Hours from './components/hours/Hours';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Reviews from './components/review/Reviews';
+import MyFavoriteBuildings from './components/favorite/MyFavoriteBuildings';
+import PrivateRoute from './components/auth/PrivateRoute';
+import MyReviews from './components/review/MyReviews';
 
 const router = createBrowserRouter([
   {
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
         path: "/buildings/edit/:id",
         element: (
           <PrivateRoute>
-            <EditBuilding />,
+            <EditBuilding />
           </PrivateRoute>
         ),
       },
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         path: "/add-building",
         element: (
           <PrivateRoute>
-            <AddBuilding />,
+            <AddBuilding />
           </PrivateRoute>
         ),
       },
@@ -48,23 +48,23 @@ const router = createBrowserRouter([
         path: "/add-hours",
         element: (
         <PrivateRoute>
-          <AddHours />,
+          <AddHours />
         </PrivateRoute>
         ),
       },
       {
-        path: "/favorite-buildings",
+        path: "/my-favorite-buildings",
         element: (
           <PrivateRoute>
-            <FavoriteBuildings />
+            <MyFavoriteBuildings />
           </PrivateRoute>
         ),
       },
       {
-        path: "/your-reviews",
+        path: "/my-reviews",
         element: (
           <PrivateRoute>
-            <YourReviews />
+            <MyReviews />
           </PrivateRoute>
         ),
       },
@@ -82,7 +82,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-review/:id",
-        element: <AddReview />,
+        element: (
+          <PrivateRoute>
+            <AddReview />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/reviews/:id",

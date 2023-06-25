@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/config"
+
 	"backend/internal/repository"
 	"backend/internal/repository/dbrepo"
 
@@ -24,10 +25,7 @@ func main() {
 
 	var app application
 
-	// Get the environment variable
 	env := os.Getenv("APP_ENV")
-
-	// Load configuration based on the environment
 	app.Config = config.LoadConfig(env)
 
 	// connect to the database
@@ -37,13 +35,11 @@ func main() {
 	}
 	app.DB = &dbrepo.PostgresDBRepo{DB: conn}
 	defer app.DB.Connection().Close()
-
 	log.Println("Starting application on port", port)
 
-	// create a Gin router instance
+	// create and register a Gin router instance
 	router := gin.Default()
-
-	// register routes
+	router.Use(CORS())
 	app.registerRoutes(router)
 
 	// start a web server

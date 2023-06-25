@@ -1,11 +1,9 @@
 package main
 
 import (
+	"backend/utils"
 	"database/sql"
 	"log"
-	"os"
-	"path"
-	"runtime"
 
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
@@ -18,8 +16,7 @@ func openDB(dsn string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	err = db.Ping()
-	if err != nil {
+	if err = db.Ping(); err != nil {
 		return nil, err
 	}
 
@@ -32,20 +29,19 @@ func (app *application) connectToDB() (*sql.DB, error) {
 		return nil, err
 	}
 
-	// for testing
-	_, currentFilePath, _, ok := runtime.Caller(1)
-	if !ok {
-		log.Println("could not get the current file path")
-	}
-	currentDir := path.Dir(currentFilePath)
-	sqlDir := path.Join(currentDir, "../../sql")
-	filePath := path.Join(sqlDir, "init.sql")
-	data, err := os.ReadFile(filePath)
+	// for initialization
+	script, err := utils.ReadSQLFile("../../sql", app.Config.InitSQL)
 	if err != nil {
 		log.Println(err)
+		return nil, err
 	}
-	connection.Exec(string(data))
-	// end for testing
+
+	_, err = connection.Exec(script)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	// end for initialization
 
 	log.Println("Connected to Postgres")
 	return connection, nil
