@@ -5,6 +5,7 @@ const TimeSelect = (props) => {
             {props.title}
           </label>
           <select
+            id={props.id}
             className={props.className}
             name={props.name}
             value={props.value}

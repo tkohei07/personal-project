@@ -10,6 +10,7 @@ const StarRating = ({ value, onChange }) => {
           key={star}
           color={star <= value ? "orange" : "grey"}
           onClick={() => onChange(star)}
+          aria-label={`star-${star}`}
         />
       ))}
     </div>

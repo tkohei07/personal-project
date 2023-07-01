@@ -3,6 +3,7 @@ import favoritesService from '../../services/favoritesService';
 import useFetchFavorites from './useFetchFavorites';
 
 const useFavoriteBuilding = (userId, loggedIn) => {
+  // Fetch favorites before manupulating the list on the screen
   const initialFavorites = useFetchFavorites(userId);
   const [favorites, setFavorites] = useState(initialFavorites);
 
@@ -10,6 +11,7 @@ const useFavoriteBuilding = (userId, loggedIn) => {
     setFavorites(initialFavorites);
   }, [initialFavorites]);
 
+  // Handle favorite building (delete from or add to My Buildings)
   const handleFavorite = async (buildingId) => {
     if (loggedIn) {
       const favoritesIds = favorites ? favorites.map(favorite => favorite.buildingId) : [];

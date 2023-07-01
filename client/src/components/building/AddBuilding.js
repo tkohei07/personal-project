@@ -1,16 +1,18 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Input from "../form/Input";
 import CheckBox from "../form/Checkbox";
 import useAddBuilding from '../../hooks/buildings/useAddBuilding';
 
 const AddBuilding = () => {
-  const navigate = useNavigate();
   const { building, handleChange, handleCheckboxChange, handleSubmit, error, isBuildingAdded } = useAddBuilding();
-
-  // After successful building addition, use navigation to redirect to home
-  if (isBuildingAdded) {
-    navigate("/");
-  }
+  
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isBuildingAdded) {
+      navigate("/");
+    }
+  }, [isBuildingAdded]);
 
   return (
     <div>
@@ -19,15 +21,18 @@ const AddBuilding = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <Input
+          id="name"
           title="Name"
           type="text"
           className="form-control"
           name="name"
           value={building.name}
           onChange={handleChange}
+          required={true}
         />
         
         <Input
+          id="address"
           title="Address"
           type="text"
           className="form-control"
@@ -37,6 +42,7 @@ const AddBuilding = () => {
         />
         
         <Input
+          id="link"
           title="Link"
           type="text"
           className="form-control"
@@ -70,7 +76,7 @@ const AddBuilding = () => {
         />
         <br />
         <button type="submit" className="btn btn-primary">
-          Add Building
+          Add
         </button>
       </form>
     </div>
