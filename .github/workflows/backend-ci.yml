@@ -29,13 +29,15 @@ jobs:
         run: docker-compose up -d db
       - name: Run tests
         run: |
-          docker-compose run --rm server go test ./tests/
-          TEST_EXIT_CODE=$?
-          if [ $TEST_EXIT_CODE -ne 0 ]; then
-            echo "Tests failed"
+          docker-compose run --rm server go test ./cmd/api/...
+          TEST_EXIT_CODE_1=$?
+          docker-compose run --rm server go test ./internal/repository/dbrepo/...
+          TEST_EXIT_CODE_2=$?
+          if [ $TEST_EXIT_CODE_1 -ne 0 ] || [ $TEST_EXIT_CODE_2 -ne 0 ]; then
+            echo "Some tests failed"
             exit 1
           else
-            echo "Tests passed"
+            echo "All tests passed"
           fi
       - name: Stop PostgreSQL service
         run: docker-compose down db
