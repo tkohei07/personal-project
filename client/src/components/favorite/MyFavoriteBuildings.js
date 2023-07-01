@@ -18,7 +18,9 @@ const MyFavoriteBuildings = () => {
               <Link to={`/building/${favorite.buildingId}`}>
                 {favorite.buildingName}
               </Link>
-              <FaHeart onClick={() => handleFavorite(favorite.buildingId)} className="favorite-icon" />
+              <button aria-label="favorite" onClick={() => handleFavorite(favorite.buildingId)} className="favorite-icon">
+                <FaHeart />
+              </button>
             </li>
           ))
         ) : (

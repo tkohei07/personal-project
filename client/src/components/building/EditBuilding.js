@@ -1,14 +1,16 @@
+//EditBuilding.test.js
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Input from "../form/Input";
 import CheckBox from "../form/Checkbox";
 import { useFetchBuildingById } from "../../hooks/buildings/useFetchBuildings";
-import buildingsService from "../../services/buildingsService";
+import useUpdateBuilding from "../../hooks/buildings/useUpdateBuilding";
 
 const EditBuilding = () => {
   const { id } = useParams();
   const [error, setError] = useState(null);
   const { building, setBuilding } = useFetchBuildingById(id);
+  const { updateBuilding } = useUpdateBuilding();
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [link, setLink] = useState("");
@@ -58,7 +60,7 @@ const EditBuilding = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const buildingData = {
@@ -70,14 +72,12 @@ const EditBuilding = () => {
       isVendingArea: isVendingArea,
     };
 
-    buildingsService
-      .updateBuilding(id, buildingData)
-      .then((data) => {
-        navigate(`/`);
-      })
-      .catch((err) => {
-        console.log("error:", err);
-      });
+    try {
+      const data = await updateBuilding(id, buildingData);
+      navigate(`/`);
+    } catch (err) {
+      console.log("error:", err);
+    }
   };
 
   return (
@@ -87,15 +87,18 @@ const EditBuilding = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <Input
+          id="name"
           title="Name"
           type="text"
           className="form-control"
           name="name"
           value={name}
           onChange={handleNameChange}
+          required={true}
         />
 
         <Input
+          id="address"
           title="Address"
           type="text"
           className="form-control"
@@ -105,6 +108,7 @@ const EditBuilding = () => {
         />
 
         <Input
+          id="link"
           title="Link"
           type="text"
           className="form-control"

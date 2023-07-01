@@ -3,11 +3,19 @@ module backend
 go 1.20
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.0
 	github.com/jackc/pgconn v1.14.0
 	github.com/jackc/pgx/v4 v4.18.1
 	github.com/lib/pq v1.10.2
+	github.com/stretchr/testify v1.8.1
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 )
 
 require (

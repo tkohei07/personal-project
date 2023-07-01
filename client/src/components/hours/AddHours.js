@@ -57,7 +57,7 @@ const AddHours = () => {
       }
     }
 
-    // validate dates and times
+    // Validate dates and times
     if (new Date(hours.startDate) > new Date(hours.endDate)) {
       setError("The start date cannot be later than the end date.");
       return;
@@ -109,6 +109,7 @@ const AddHours = () => {
       {buildings && buildings.length > 0 ? (
         <form onSubmit={handleHoursSubmit}>
           <Select
+            id="buildingId"
             title="Building"
             name="buildingId"
             className="form-control"
@@ -136,26 +137,27 @@ const AddHours = () => {
           </div>
 
           <Input
+            id="startDate"
             title="Start Date"
             type="date"
             className="form-control"
-            id="startDate"
             name="startDate"
             value={hours.startDate}
             onChange={handleHoursChange}
           />
           
           <Input
+            id="endDate"
             title="End Date"
             type="date"
             className="form-control"
-            id="endDate"
             name="endDate"
             value={hours.endDate}
             onChange={handleHoursChange}
           />
 
           <TimeSelect
+            id="openTime"
             title="Open Time"
             name="openTime"
             className="form-control"
@@ -166,6 +168,7 @@ const AddHours = () => {
           />
 
           <TimeSelect
+            id="closeTime"
             title="Close Time"
             name="closeTime"
             className="form-control"
@@ -177,7 +180,7 @@ const AddHours = () => {
 
           {error && <div className="alert alert-danger">{error}</div>}
           <button type="submit" className="btn btn-primary">
-            Add Hours
+            Add
           </button>
         </form>
       ) : (

@@ -10,6 +10,7 @@ const AddReview = () => {
   const { building } = useFetchBuildingById(id);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
   const { userId } = useUser();
   const { addReview, error } = useAddReview(id, userId);
   console.log("userId: ", userId);
@@ -24,6 +25,12 @@ const AddReview = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (rating === 0) {
+      setErrorMessage("Please provide a rating.");
+      return;
+    }
+
     addReview(rating, comment);
   };
 
@@ -51,6 +58,7 @@ const AddReview = () => {
         </div>
 
         {error && <div className="alert alert-danger">{error} - UserId: {userId}</div>}
+        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
         <button type="submit" className="btn btn-primary">
           Submit Review
         </button>

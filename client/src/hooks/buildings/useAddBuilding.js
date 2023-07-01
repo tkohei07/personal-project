@@ -12,7 +12,7 @@ const useAddBuilding = () => {
     isReservableStudyRoom: false,
     isVendingArea: false,
   });
-  const [isBuildingAdded, setIsBuildingAdded] = useState(false); // new state
+  const [isBuildingAdded, setIsBuildingAdded] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
