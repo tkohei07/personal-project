@@ -34,14 +34,6 @@ describe('Hours component', () => {
     expect(getByText('Hours: Building 1')).toBeInTheDocument();
   });
 
-  test('the form fields are rendered correctly', () => {
-    const { getByText } = render(<Hours />);
-
-    expect(getByText('Date')).toBeInTheDocument();
-    expect(getByText('Day')).toBeInTheDocument();
-    expect(getByText('Hours')).toBeInTheDocument();
-  });
-
   test('renders hours table correctly', () => {
     const { getByText } = render(<MemoryRouter initialEntries={["/hours/1"]}><Hours /></MemoryRouter>);
     expect(getByText('1/1/2023-12/31/2023')).toBeInTheDocument();

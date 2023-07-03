@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import Input from '../form/Input';
 import { useUser } from '../../contexts/UserContext';
 import { useAuth } from '../../hooks/auth/useAuth';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import { styled } from '@mui/material/styles';
+
+const RegisterLink = styled(Link)({
+  color: 'blue',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline',
+  },
+});
 
 const Login = () => {
   const location = useLocation();
@@ -57,32 +70,45 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <Box sx={{ m: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography variant="h4" gutterBottom>
+        Login
+      </Typography>
+      <hr />
       <form onSubmit={handleSubmit}>
-        <Input
-          title="Username"
+        <TextField
+          id="username"
+          label="Username"
           type="text"
-          className="form-control"
           name="username"
           value={username}
           onChange={handleUsernameChange}
+          margin="normal"
+          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
         />
 
-        <Input
-          title="Password"
+        <TextField
+          id="password"
+          label="Password"
           type="password"
-          className="form-control"
           name="password"
           value={password}
           onChange={handlePasswordChange}
+          margin="normal"
+          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
         />
-        {error && <p className="error-message">{error}</p>}
-        {message && <p className="success-message">{message}</p>}
-        <button type="submit">Login</button>
+
+        {error && <Alert severity="error">{error}</Alert>}
+        {message && <Alert severity="success">{message}</Alert>}
+        <Button type="submit" variant="contained" color="primary">
+          Login
+        </Button>
       </form>
       <br />
-      <p>Don't have an account? <Link to="/register">Register here</Link></p>
-    </div>
+      <Typography variant="body1">
+        Don't have an account? <RegisterLink to="/register">Register here</RegisterLink>
+      </Typography>
+    </Box>
   );
 };
 

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from '../../contexts/UserContext';
 import { formatTime } from '../../utils/formatTime';
 import BuildingRow from '../building/BuildingRow';
-import CheckBox from "../form/Checkbox";
+import Box from '@mui/system/Box';
+import Checkbox from '@mui/material/Checkbox';
+import { FormControlLabel } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import useDeleteBuilding from '../../hooks/buildings/useDeleteBuilding';
 import { useFetchBuildingsWithTodayHours } from '../../hooks/buildings/useFetchBuildings';
 import useFetchCoordinates from '../../hooks/coordinates/useFetchCoordinates';
@@ -43,30 +46,37 @@ const Home = () => {
       )
     : [];
 
-    return (
-      <div>
-        <input
-          type="text"
-          placeholder="Search building by name"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="form-control mb-3"
-        />
-    
-        <CheckBox
+
+  return (
+    <Box sx={{ m: 3 }}>
+      <TextField
+        label="Search building by name"
+        variant="outlined"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        fullWidth
+        margin="normal"
+      />
+
+    <FormControlLabel
+      control={
+        <Checkbox
           id="isOpenToday"
           value="Open today"
           name="isOpenToday"
           checked={isOpenToday}
           onChange={(e) => setIsOpenToday(e.target.checked)}
         />
-    
-        <table className="table table-striped table-hover">
+      }
+      label="Open today"
+    />
+
+      <table className="table table-striped table-hover">
           <thead>
             <tr>
-              <th>Building</th>
+              <th></th>
               <th>Today</th>
-              <th>Rating</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -91,9 +101,8 @@ const Home = () => {
           )}
           </tbody>
         </table>
-      </div>
-    )
-    
+    </Box>
+  );
 }
 
 export default Home;

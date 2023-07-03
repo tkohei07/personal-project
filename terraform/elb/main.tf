@@ -10,6 +10,10 @@ variable "public_subnet_ids" {
   type = list
 }
 
+variable "domain_name" {
+  type    = string
+}
+
 resource "aws_security_group" "this" {
   name        = "${var.name}-alb"
   description = "${var.name} alb"
@@ -66,21 +70,25 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# resource "aws_route53_zone" "this" {
-#   name = "tkohei-project.com"
-# }
+// add for domain
+resource "aws_route53_zone" "this" {
+  name = "${var.domain_name}"
+}
 
-# resource "aws_route53_record" "this" {
-#   zone_id = aws_route53_zone.this.zone_id
-#   name    = "tkohei-project.com"
-#   type    = "A"
+resource "aws_route53_record" "this" {
+  zone_id = aws_route53_zone.this.zone_id
+  name    = "${var.domain_name}"
+  type    = "A"
 
-#   alias {
-#     name                   = aws_lb.this.dns_name
-#     zone_id                = aws_lb.this.zone_id
-#     evaluate_target_health = false
-#   }
-# }
+  alias {
+    name                   = aws_lb.this.dns_name
+    zone_id                = aws_lb.this.zone_id
+    evaluate_target_health = false
+  }
+
+  depends_on = [aws_lb.this]
+}
+// add for domain end
 
 output "http_listener_arn" {
   value = "${aws_lb_listener.http.arn}"

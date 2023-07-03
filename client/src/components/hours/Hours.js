@@ -5,6 +5,15 @@ import { daysOfWeek } from '../../constants/timeAndDate';
 import { useFetchBuildingById } from '../../hooks/buildings/useFetchBuildings';
 import { useFetchHours } from '../../hooks/hours/useFetchHours';
 import useDeleteHour from '../../hooks/hours/useDeleteHour';
+import Box from '@mui/system/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 const Hours = () => {
   const { id } = useParams();
@@ -20,53 +29,60 @@ const Hours = () => {
   }, [hoursFromFetch]);
 
   return (
-    <div>
-      <h2>Hours: {building.name}</h2>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Hours: {building.name}
+      </Typography>
       <hr />
       {hours && hours.length > 0 ? (
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Day</th>
-              <th>Hours</th>
-            </tr>
-          </thead>
-          <tbody>
-            {hours.map((hour) => {
-              // convert date strings to Date objects
-              const startDate = new Date(hour.startDate);
-              const endDate = new Date(hour.endDate);
+        <TableContainer>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
+                {loggedIn && <TableCell></TableCell>}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {hours.map((hour) => {
+                // convert date strings to Date objects
+                const startDate = new Date(hour.startDate);
+                const endDate = new Date(hour.endDate);
 
-              // Convert time strings to Date objects
-              const openTime = new Date(`1970-01-01T${hour.openTimeStr}Z`);
-              const closeTime = new Date(`1970-01-01T${hour.closeTimeStr}Z`);
+                // Convert time strings to Date objects
+                const openTime = new Date(`1970-01-01T${hour.openTimeStr}`);
+                const closeTime = new Date(`1970-01-01T${hour.closeTimeStr}`);
 
-              // Convert time to 12-hour format
-              const openTimeStr = openTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-              const closeTimeStr = closeTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                // Convert time to 12-hour format
+                const openTimeStr = openTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+                const closeTimeStr = closeTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
-              return (
-                <tr key={hour.id}>
-                  <td>{startDate.toLocaleDateString()}-{endDate.toLocaleDateString()}</td>
-                  <td>{daysOfWeek.find(day => day.id === hour.dayOfWeek)?.label}</td>
-                  <td>{openTimeStr}-{closeTimeStr}</td>
-                  <td>
+                return (
+                  <TableRow key={hour.id}>
+                    <TableCell>{startDate.toLocaleDateString()}-{endDate.toLocaleDateString()}</TableCell>
+                    <TableCell>{daysOfWeek.find(day => day.id === hour.dayOfWeek)?.label}</TableCell>
+                    <TableCell>{openTimeStr}-{closeTimeStr}</TableCell>
                     {loggedIn && (
-                      <button onClick={() => deleteHour(hour.id, hours, setHours)} className="btn btn-danger">
-                        Delete
-                      </button>
+                      <TableCell>
+                        <Button variant="contained" color="error" onClick={() => deleteHour(hour.id, hours, setHours)}>
+                          Delete
+                        </Button>
+                      </TableCell>
                     )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       ) : (
-        <p>No hours for this building.</p>
+        <Typography variant="subtitle1" gutterBottom>
+          No hours for this building.
+        </Typography>
       )}
-    </div>
+    </Box>
   );
 }
 

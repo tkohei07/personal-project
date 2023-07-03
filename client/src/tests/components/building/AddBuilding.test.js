@@ -1,4 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import useAddBuilding from '../../../hooks/buildings/useAddBuilding';
 import AddBuilding from '../../../components/building/AddBuilding';
 
@@ -32,27 +33,26 @@ describe('AddBuilding component', () => {
 
   });
 
-  test('the form fields are rendered correctly', () => {
-    const { getByText } = render(<AddBuilding />);
+  it('the form fields are rendered correctly', () => {
+    const { getByLabelText, getByText } = render(<Router><AddBuilding /></Router>);
 
     expect(getByText('Name')).toBeInTheDocument();
-    expect(getByText('Address')).toBeInTheDocument();
-    expect(getByText('Link')).toBeInTheDocument();
-    expect(getByText('Computer Room')).toBeInTheDocument();
-    expect(getByText('Reservable Study Room')).toBeInTheDocument();
-    expect(getByText('Vending Area')).toBeInTheDocument();
+    expect(getByLabelText('Address')).toBeInTheDocument();
+    expect(getByLabelText('Link')).toBeInTheDocument();
+    expect(getByLabelText('Computer Room')).toBeInTheDocument();
+    expect(getByLabelText('Reservable Study Room')).toBeInTheDocument();
+    expect(getByLabelText('Vending Area')).toBeInTheDocument();
     expect(getByText('Add')).toBeInTheDocument();
   });
   
   it('renders correctly and submits form', async () => {
     const { getByText, getByLabelText } = render(<AddBuilding />);
 
-    fireEvent.change(getByLabelText('Name'), { target: { value: 'Test Building' } });
     fireEvent.change(getByLabelText('Address'), { target: { value: '123 Main St' } });
     fireEvent.change(getByLabelText('Link'), { target: { value: 'http://test.com' } });
-    fireEvent.click(getByText('Computer Room'));
-    fireEvent.click(getByText('Reservable Study Room'));
-    fireEvent.click(getByText('Vending Area'));
+    fireEvent.click(getByLabelText('Computer Room'));
+    fireEvent.click(getByLabelText('Reservable Study Room'));
+    fireEvent.click(getByLabelText('Vending Area'));
     fireEvent.click(getByText('Add'));
 
     expect(mockHandleSubmit).toHaveBeenCalled();

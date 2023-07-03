@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../form/Input";
 import { useAuth } from "../../hooks/auth/useAuth";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -13,16 +17,15 @@ const Register = () => {
 
   const { registerUser } = useAuth();
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handlePasswordConfirmChange = (event) => {
-    setPasswordConfirm(event.target.value);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "username") {
+      setUsername(value);
+    } else if (name === "password") {
+      setPassword(value);
+    } else if (name === "passwordConfirm") {
+      setPasswordConfirm(value);
+    }
   };
 
   const checkPasswordStrength = (password) => {
@@ -74,42 +77,53 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <Box sx={{ m: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Typography variant="h4" gutterBottom>
+        Register
+      </Typography>
+      <hr />
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
       <form onSubmit={handleSubmit}>
-        <Input
+        <TextField
           id="username"
-          title="Username"
+          label="Username"
           type="text"
-          className="form-control"
           name="username"
           value={username}
-          onChange={handleUsernameChange}
+          onChange={handleInputChange}
+          margin="normal"
+          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
         />
 
-        <Input
+        <TextField
           id="password"
-          title="Password"
+          label="Password"
           type="password"
-          className="form-control"
           name="password"
           value={password}
-          onChange={handlePasswordChange}
+          onChange={handleInputChange}
+          margin="normal"
+          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
         />
 
-        <Input
+        <TextField
           id="passwordConfirm"
-          title="Confirm Password"
+          label="Confirm Password"
           type="password"
-          className="form-control"
           name="passwordConfirm"
           value={passwordConfirm}
-          onChange={handlePasswordConfirmChange}
+          onChange={handleInputChange}
+          margin="normal"
+          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
         />
 
-        <button type="submit">Register</button>
-        {error && <p>{error}</p>}
+        {error && <Alert severity="error">{error}</Alert>}
+        <Button type="submit" variant="contained" color="primary">
+          Register
+        </Button>
       </form>
-    </div>
+      </div>
+    </Box>
   );
 };
 

@@ -1,20 +1,12 @@
 const buildingsService = {
-  fetchBuildingsWithTodayHours: () => {
-    return fetch(`${process.env.REACT_APP_BACKEND}/api/buildings`)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
-  },
-
-  getAllBuildings: () => {
-    return fetch(`${process.env.REACT_APP_BACKEND}/api/all-buildings`)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
+  getAllBuildings: async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/all-buildings`);
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   },
 
   fetchBuildingById: async (buildingId) => {
@@ -24,6 +16,16 @@ const buildingsService = {
       return data;
     } else {
       throw new Error(data.error);
+    }
+  },
+
+  fetchBuildingsWithTodayHours: async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/buildings`);
+      return await response.json();
+    } catch (error) {
+      console.error(error);
+      return [];
     }
   },
 

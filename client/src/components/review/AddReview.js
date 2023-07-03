@@ -4,6 +4,11 @@ import { useUser } from '../../contexts/UserContext';
 import StarRating from "../form/StarRating";
 import { useFetchBuildingById } from '../../hooks/buildings/useFetchBuildings';
 import useAddReview from '../../hooks/reviews/useAddReview';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
 
 const AddReview = () => {
   const { id } = useParams();
@@ -35,35 +40,35 @@ const AddReview = () => {
   };
 
   return (
-    <div className="container">
-      <h1>Review {building.name}</h1>
-      <form onSubmit={handleSubmit} className="mt-4">
-        <div className="mb-3">
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Review {building.name}
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <Box sx={{ mb: 3 }}>
           <StarRating
             value={rating}
             onChange={handleRatingChange}
           />
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="comment" className="form-label">
-            Comment:
-          </label>
-          <textarea
+        </Box>
+        <Box sx={{ mb: 3 }}>
+          <TextField
             id="comment"
-            className="form-control"
+            label="Comment"
+            multiline
+            rows={4}
             value={comment}
             onChange={handleCommentChange}
+            fullWidth
           />
-        </div>
-
-        {error && <div className="alert alert-danger">{error} - UserId: {userId}</div>}
-        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-        <button type="submit" className="btn btn-primary">
+        </Box>
+        {error && <Alert severity="error">{error} - UserId: {userId}</Alert>}
+        {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+        <Button type="submit" variant="contained">
           Submit Review
-        </button>
-      </form>
-    </div>
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

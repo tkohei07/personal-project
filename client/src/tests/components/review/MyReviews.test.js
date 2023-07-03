@@ -42,8 +42,8 @@ describe('MyReviews component', () => {
   });
 
   test('delete button calls deleteReview function', async () => {
-    const { getAllByText } = render(<MemoryRouter><MyReviews /></MemoryRouter>);
-    const deleteButtons = getAllByText('Delete');
+    const { getAllByRole } = render(<MemoryRouter><MyReviews /></MemoryRouter>);
+    const deleteButtons = getAllByRole('button');
     
     for (let i = 0; i < deleteButtons.length; i++) {
       await act(async () => {
