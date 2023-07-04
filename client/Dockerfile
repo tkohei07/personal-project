@@ -4,6 +4,10 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
+COPY package*.json ./
+
+RUN npm install
+
 RUN apk update && \
     apk add --no-cache git bash && \
     npm install react-router-dom && \
