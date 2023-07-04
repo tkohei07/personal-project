@@ -2,4 +2,3 @@ client/node_modules/.cache/
 client/.env.local
 terraform/.terraform/
 node_modules
-node_modules

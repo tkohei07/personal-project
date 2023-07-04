@@ -83,45 +83,45 @@ const Register = () => {
       </Typography>
       <hr />
       <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          id="username"
-          label="Username"
-          type="text"
-          name="username"
-          value={username}
-          onChange={handleInputChange}
-          margin="normal"
-          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
-        />
+        <form onSubmit={handleSubmit}>
+          <TextField
+            id="username"
+            label="Username"
+            type="text"
+            name="username"
+            value={username}
+            onChange={handleInputChange}
+            margin="normal"
+            style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
+          />
 
-        <TextField
-          id="password"
-          label="Password"
-          type="password"
-          name="password"
-          value={password}
-          onChange={handleInputChange}
-          margin="normal"
-          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
-        />
+          <TextField
+            id="password"
+            label="Password"
+            type="password"
+            name="password"
+            value={password}
+            onChange={handleInputChange}
+            margin="normal"
+            style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
+          />
 
-        <TextField
-          id="passwordConfirm"
-          label="Confirm Password"
-          type="password"
-          name="passwordConfirm"
-          value={passwordConfirm}
-          onChange={handleInputChange}
-          margin="normal"
-          style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
-        />
+          <TextField
+            id="passwordConfirm"
+            label="Confirm Password"
+            type="password"
+            name="passwordConfirm"
+            value={passwordConfirm}
+            onChange={handleInputChange}
+            margin="normal"
+            style={{ width: '400px', display: 'flex', justifyContent: 'center' }}
+          />
 
-        {error && <Alert severity="error">{error}</Alert>}
-        <Button type="submit" variant="contained" color="primary">
-          Register
-        </Button>
-      </form>
+          {error && <Alert severity="error">{error}</Alert>}
+          <Button type="submit" variant="contained" color="primary">
+            Register
+          </Button>
+        </form>
       </div>
     </Box>
   );
