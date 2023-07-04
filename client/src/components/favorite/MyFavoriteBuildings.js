@@ -1,33 +1,52 @@
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
 import { useUser } from '../../contexts/UserContext';
 import useFavoriteBuilding from '../../hooks/favorites/useFavoriteBuilding';
+import Box from '@mui/system/Box';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 
 const MyFavoriteBuildings = () => {
   const { userId, loggedIn } = useUser();
   const { favorites, handleFavorite } = useFavoriteBuilding(userId, loggedIn);
 
   return (
-    <div>
-      <h2>Favorite Buildings</h2>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Favorite Buildings
+      </Typography>
       <hr />
-      <ul>
+      <List>
         {favorites && favorites.length > 0 ? (
           favorites.map((favorite) => (
-            <li key={favorite.buildingId}>
-              <Link to={`/building/${favorite.buildingId}`}>
-                {favorite.buildingName}
-              </Link>
-              <button aria-label="favorite" onClick={() => handleFavorite(favorite.buildingId)} className="favorite-icon">
-                <FaHeart />
-              </button>
-            </li>
+            <ListItem key={favorite.buildingId}>
+              <ListItemText
+                primary={
+                  <Typography variant="h6">
+                    <RouterLink to={`/building/${favorite.buildingId}`}>
+                      {favorite.buildingName}
+                    </RouterLink>
+                  </Typography>
+                }
+              />
+              <ListItemSecondaryAction>
+                <IconButton aria-label="favorite" onClick={() => handleFavorite(favorite.buildingId)}>
+                  <FaHeart />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
           ))
         ) : (
-          <p>No favorite buildings found.</p>
+          <Typography variant="subtitle1">
+            No favorite buildings found.
+          </Typography>
         )}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 }
 

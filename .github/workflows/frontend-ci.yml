@@ -16,6 +16,7 @@ jobs:
         run: docker-compose build
       - name: Start Docker containers
         run: docker-compose up -d
+
       - name: Run tests
         run: |
           docker-compose run --rm -e CI=true client sh -c "npm test -- --coverage --watchAll=false"

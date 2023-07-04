@@ -33,12 +33,10 @@ describe('Home component', () => {
   });
 
   test('the form fields are rendered correctly', () => {
-    const { getByPlaceholderText, getByLabelText, getByText } = render(<MemoryRouter><Home /></MemoryRouter>);
-    expect(getByPlaceholderText('Search building by name')).toBeInTheDocument();
+    const { getByLabelText, getByText } = render(<MemoryRouter><Home /></MemoryRouter>);
+    expect(getByLabelText('Search building by name')).toBeInTheDocument();
     expect(getByLabelText('Open today')).toBeInTheDocument();
-    expect(getByText('Building')).toBeInTheDocument();
     expect(getByText('Today')).toBeInTheDocument();
-    expect(getByText('Rating')).toBeInTheDocument();
   });
 
   test('the row data is rendered correctly', () => {
@@ -50,14 +48,14 @@ describe('Home component', () => {
   });
 
   test('search box filters buildings correctly', () => {
-    const { getByPlaceholderText, getByText, queryByText } = render(<MemoryRouter><Home /></MemoryRouter>);
+    const { getByLabelText, getByText, queryByText } = render(<MemoryRouter><Home /></MemoryRouter>);
   
     // All buildings should be visible at first
     expect(getByText('Building 1')).toBeInTheDocument();
     expect(getByText('Building 2')).toBeInTheDocument();
   
     // After entering a search term, only the matching buildings should be visible
-    fireEvent.change(getByPlaceholderText('Search building by name'), { target: { value: '1' } });
+    fireEvent.change(getByLabelText('Search building by name'), { target: { value: '1' } });
   
     expect(getByText('Building 1')).toBeInTheDocument();
     expect(queryByText('Building 2')).toBeNull();

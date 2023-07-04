@@ -35,11 +35,11 @@ describe('Register component', () => {
   });
 
   it('renders without crashing', () => {
-    const { getByText } = render(<Router><Register /></Router>);
-    expect(getByText('Username')).toBeInTheDocument();
-    expect(getByText('Password')).toBeInTheDocument();
-    expect(getByText('Confirm Password')).toBeInTheDocument();
-    expect(getByText('Register')).toBeInTheDocument();
+    const { getByLabelText, getByRole } = render(<Router><Register /></Router>);
+    expect(getByLabelText('Username')).toBeInTheDocument();
+    expect(getByLabelText('Password')).toBeInTheDocument();
+    expect(getByLabelText('Confirm Password')).toBeInTheDocument();
+    expect(getByRole('button', { name: /Register/i })).toBeInTheDocument();
   });
 
   it('shows an error message when fields are empty', async () => {
@@ -49,21 +49,21 @@ describe('Register component', () => {
   });
 
   it('shows an error message when passwords do not match', async () => {
-    const { getByText, getByLabelText, findByText } = render(<Router><Register /></Router>);
+    const { getByLabelText, getByRole, findByText } = render(<Router><Register /></Router>);
     fireEvent.change(getByLabelText('Username'), { target: { value: 'test' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password' } });
     fireEvent.change(getByLabelText('Confirm Password'), { target: { value: 'password1' } });
-    fireEvent.click(getByText('Register'));
+    fireEvent.click(getByRole('button'));
 
     expect(await findByText("Passwords do not match")).toBeInTheDocument();
   });
 
   it('shows an error message when password is not strong enough', async () => {
-    const { getByText, getByLabelText, findByText } = render(<Router><Register /></Router>);
+    const { getByLabelText, getByRole, findByText } = render(<Router><Register /></Router>);
     fireEvent.change(getByLabelText('Username'), { target: { value: 'test' } });
     fireEvent.change(getByLabelText('Password'), { target: { value: 'password' } });
     fireEvent.change(getByLabelText('Confirm Password'), { target: { value: 'password' } });
-    fireEvent.click(getByText('Register'));
+    fireEvent.click(getByRole('button'));
 
     expect(await findByText(
       "Password is not strong enough. It must contain at least one number, " +

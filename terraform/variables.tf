@@ -10,6 +10,11 @@ variable "db_name" {
   type        = string
 }
 
+variable "domain_name" {
+  type    = string
+  default = "tkohei-project.com"
+}
+
 variable "dsn" {
   type        = string
 }

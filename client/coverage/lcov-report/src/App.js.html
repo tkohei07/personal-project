@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -121,12 +121,7 @@
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
 <a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L59'></a><a href='#L59'>59</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,24 +132,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,64 +180,59 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Link, Outlet } from 'react-router-dom';
+import { LoadScript } from "@react-google-maps/api";
+import { useUser } from './contexts/UserContext';
+import './styles/App.css';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/system/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { VpnKey as VpnKeyIcon, ExitToApp as ExitToAppIcon } from '@mui/icons-material';
 &nbsp;
-import logo from './logo.svg';
-import './App.css';
+function <span class="fstat-no" title="function not covered" >App(</span>) {
+  const { loggedIn, setLoggedIn } = <span class="cstat-no" title="statement not covered" >useUser();</span>
 &nbsp;
-function App() {
-  // return (
-  //   &lt;div className="App"&gt;
-  //     &lt;header className="App-header"&gt;
-  //       &lt;img src={logo} className="App-logo" alt="logo" /&gt;
-  //       &lt;p&gt;
-  //         Edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.
-  //       &lt;/p&gt;
-  //       &lt;a
-  //         className="App-link"
-  //         href="https://reactjs.org"
-  //         target="_blank"
-  //         rel="noopener noreferrer"
-  //       &gt;
-  //       &lt;Link to="/" className="list-group-item list-group-item-action"&gt;Home&lt;/Link&gt;
-  //       &lt;Link to="/movies" className="list-group-item list-group-item-action"&gt;Movies&lt;/Link&gt;
-  //       &lt;/a&gt;
-  //     &lt;/header&gt;
-  //   &lt;/div&gt;
-  // );
+  const googleMapsApiKey = <span class="cstat-no" title="statement not covered" >process.env.REACT_APP_GOOGLEMAPS_API_KEY;</span>
 &nbsp;
-  // const navigate = useNavigate();  
+  const handleLogout = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    localStorage.removeItem('token');</span>
+<span class="cstat-no" title="statement not covered" >    setLoggedIn(false);</span>
+  };
 &nbsp;
-  return (
-    // for using bootstrap??
-    &lt;div className="container"&gt;
-      &lt;div className="row"&gt;
-        &lt;div className="col"&gt;
-          &lt;h1 className="mt-3"&gt;Go Watch a Movie!&lt;/h1&gt;
-        &lt;/div&gt;
-        &lt;hr className="mb-3"&gt;&lt;/hr&gt;
-      &lt;/div&gt;
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;LoadScript googleMapsApiKey={googleMapsApiKey}&gt;
+      &lt;Box sx={{ m: 3 }}&gt;
+        &lt;Box sx={{ display: 'flex', justifyContent: 'space-between' }}&gt;
+          &lt;Tabs&gt;
+            &lt;Tab label="Home" component={Link} to="/" /&gt;
+            {loggedIn &amp;&amp; (
+              &lt;&gt;
+                &lt;Tab label="Add Building" component={Link} to="/add-building" /&gt;
+                &lt;Tab label="Add Hours" component={Link} to="/add-hours" /&gt;
+                &lt;Tab label="My Buildings" component={Link} to="/my-favorite-buildings" /&gt;
+                &lt;Tab label="My Reviews" component={Link} to="/my-reviews" /&gt;
+              &lt;/&gt;
+            )}
+          &lt;/Tabs&gt;
 &nbsp;
-      &lt;div className="row"&gt;
-        &lt;div className="col-md-2"&gt;
-          &lt;nav&gt;
-            &lt;div className="list-group"&gt;
-              &lt;Link to="/" className="list-group-item list-group-item-action"&gt;
-                Home
-              &lt;/Link&gt;
-              &lt;Link to="/movies" className="list-group-item list-group-item-action"&gt;
-                Movies
-              &lt;/Link&gt;
-              &lt;Link to="/add-movie" className="list-group-item list-group-item-action"&gt;
-                Add Movie
-              &lt;/Link&gt;
-            &lt;/div&gt;
-          &lt;/nav&gt;
-        &lt;/div&gt;
-        &lt;div className="col-md-10"&gt;
+          {loggedIn ? (
+            &lt;IconButton onClick={handleLogout} color="primary"&gt;
+              &lt;ExitToAppIcon /&gt;
+            &lt;/IconButton&gt;
+          ) : (
+            &lt;Link to="/login"&gt;
+              &lt;IconButton color="primary"&gt;
+                &lt;VpnKeyIcon /&gt;
+              &lt;/IconButton&gt;
+            &lt;/Link&gt;
+          )}
+        &lt;/Box&gt;
+        &lt;div className="custom-container"&gt;
           &lt;Outlet /&gt;
         &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
+&nbsp;
+      &lt;/Box&gt;
+    &lt;/LoadScript&gt;
   );
 }
 &nbsp;
@@ -259,7 +244,7 @@ export default App;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-23T05:43:36.796Z
+                at 2023-07-04T02:55:28.289Z
             </div>
         <script src="../prettify.js"></script>
         <script>

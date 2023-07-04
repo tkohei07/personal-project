@@ -35,7 +35,7 @@ describe('AddReview component', () => {
 
     expect(getByText('Review Building 1')).toBeInTheDocument();
     expect(getAllByLabelText(/^star-/).length).toBe(5);
-    expect(getByLabelText('Comment:')).toBeInTheDocument();
+    expect(getByLabelText('Comment')).toBeInTheDocument();
     expect(getByText('Submit Review')).toBeInTheDocument();
   });
   
@@ -45,7 +45,7 @@ describe('AddReview component', () => {
     const addReview = useAddReview().addReview;
   
     fireEvent.click(getByLabelText('star-4'));
-    fireEvent.change(getByLabelText('Comment:'), { target: { value: 'Nice building.' } });
+    fireEvent.change(getByLabelText('Comment'), { target: { value: 'Nice building.' } });
     fireEvent.click(getByText('Submit Review'));
   
     expect(addReview).toHaveBeenCalled();
@@ -57,7 +57,7 @@ describe('AddReview component', () => {
   
     const addReview = useAddReview().addReview;
   
-    fireEvent.change(getByLabelText('Comment:'), { target: { value: 'Nice building.' } });
+    fireEvent.change(getByLabelText('Comment'), { target: { value: 'Nice building.' } });
     fireEvent.click(getByText('Submit Review'));
   
     expect(addReview).not.toHaveBeenCalled();

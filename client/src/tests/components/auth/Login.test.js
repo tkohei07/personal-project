@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { useUser } from '../../../contexts/UserContext';
 import { useAuth } from '../../../hooks/auth/useAuth';
 import Login from '../../../components/auth/Login';
@@ -32,10 +32,10 @@ describe('Login component', () => {
   });
 
   it('renders without crashing', () => {
-    const { getByText } = render(<Router><Login /></Router>);
-    expect(getByText('Username')).toBeInTheDocument();
-    expect(getByText('Password')).toBeInTheDocument();
-    expect(getByText('Login')).toBeInTheDocument();
+    const { getByLabelText, getByRole } = render(<Router><Login /></Router>);
+    expect(getByLabelText('Username')).toBeInTheDocument();
+    expect(getByLabelText('Password')).toBeInTheDocument();
+    expect(getByRole('button', { name: /login/i })).toBeInTheDocument();
   });
 
   it('navigates to the home page when login is successful', async () => {

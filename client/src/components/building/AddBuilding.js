@@ -1,8 +1,13 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../form/Input";
-import CheckBox from "../form/Checkbox";
 import useAddBuilding from '../../hooks/buildings/useAddBuilding';
+import Box from '@mui/system/Box';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
 
 const AddBuilding = () => {
   const { building, handleChange, handleCheckboxChange, handleSubmit, error, isBuildingAdded } = useAddBuilding();
@@ -15,71 +20,91 @@ const AddBuilding = () => {
   }, [isBuildingAdded]);
 
   return (
-    <div>
-      <h2>Add Building</h2>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Add Building
+      </Typography>
       <hr />
-      {error && <div className="alert alert-danger">{error}</div>}
+      {error && <Alert severity="error">{error}</Alert>}
       <form onSubmit={handleSubmit}>
-        <Input
+        <TextField
           id="name"
-          title="Name"
+          label="Name"
           type="text"
-          className="form-control"
           name="name"
+          variant="outlined"
           value={building.name}
           onChange={handleChange}
-          required={true}
+          required
+          fullWidth
+          margin="normal"
         />
         
-        <Input
+        <TextField
           id="address"
-          title="Address"
+          label="Address"
           type="text"
-          className="form-control"
+          variant="outlined"
           name="address"
           value={building.address}
           onChange={handleChange}
+          fullWidth
+          margin="normal"
         />
         
-        <Input
+        <TextField
           id="link"
-          title="Link"
+          label="Link"
           type="text"
-          className="form-control"
+          variant="outlined"
           name="link"
           value={building.link}
           onChange={handleChange}
+          fullWidth
+          margin="normal"
         />
 
-        <CheckBox
-          id="isComputerRoom"
-          value="Computer Room"
-          name="isComputerRoom"
-          checked={building.isComputerRoom}
-          onChange={handleCheckboxChange}
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="isComputerRoom"
+              name="isComputerRoom"
+              checked={building.isComputerRoom}
+              onChange={handleCheckboxChange}
+            />
+          }
+          label="Computer Room"
         />
 
-        <CheckBox
-          id="isReservableStudyRoom"
-          value="Reservable Study Room"
-          name="isReservableStudyRoom"
-          checked={building.isReservableStudyRoom}
-          onChange={handleCheckboxChange}
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="isReservableStudyRoom"
+              name="isReservableStudyRoom"
+              checked={building.isReservableStudyRoom}
+              onChange={handleCheckboxChange}
+            />
+          }
+          label="Reservable Study Room"
         />
 
-        <CheckBox
-          id="isVendingArea"
-          value="Vending Area"
-          name="isVendingArea"
-          checked={building.isVendingArea}
-          onChange={handleCheckboxChange}
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="isVendingArea"
+              name="isVendingArea"
+              checked={building.isVendingArea}
+              onChange={handleCheckboxChange}
+            />
+          }
+          label="Vending Area"
         />
         <br />
-        <button type="submit" className="btn btn-primary">
+        <Button type="submit" variant="contained" color="primary">
           Add
-        </button>
+        </Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

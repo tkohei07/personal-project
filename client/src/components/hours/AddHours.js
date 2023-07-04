@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
-import { daysOfWeek, timeOptions } from '../../constants/timeAndDate';
-import Checkbox from "../form/Checkbox";
-import Input from "../form/Input";
-import Select from "../form/Select";
-import TimeSelect from "../form/TimeSelect";
-import { useFetchBuildings} from "../../hooks/buildings/useFetchBuildings";
+import { useState } from "react";
+import { daysOfWeek } from '../../constants/timeAndDate';
+import { useFetchBuildings } from "../../hooks/buildings/useFetchBuildings";
 import hoursService from "../../services/hoursService";
+import Box from '@mui/system/Box';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Alert from '@mui/material/Alert';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
 
 const AddHours = () => {
   const [error, setError] = useState(null);
@@ -103,91 +109,131 @@ const AddHours = () => {
     
 
   return (
-    <div>
-      <h2>Add Hours</h2>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Add Hours
+      </Typography>
       <hr />
       {buildings && buildings.length > 0 ? (
         <form onSubmit={handleHoursSubmit}>
+          <InputLabel id="building-label">Building</InputLabel>
           <Select
+            labelId="building-label"
             id="buildingId"
-            title="Building"
             name="buildingId"
-            className="form-control"
             value={hours.buildingId}
             onChange={handleBuildingChange}
-            optionDefault="Select a building"
-            options={buildings}
-          />
+            fullWidth
+            margin="dense"
+          >
+            {buildings.map((building, index) => (
+              <MenuItem key={index} value={building.id}>{building.name}</MenuItem>
+            ))}
+          </Select>
 
-          <div className="mb-3">
-            <label htmlFor="dayOfWeek" className="form-label">
-              Day of the week
-            </label>
-            <br />
           {daysOfWeek.map((day, index) => (
-            <Checkbox
+            <FormControlLabel
               key={index}
-              id={`dayOfWeek-${index}`}
-              name="dayOfWeek"
-              value={day.label}
-              checked={hours.dayOfWeek.includes(day.label)}
-              onChange={handleHoursChange}
+              control={
+                <Checkbox
+                  id={`dayOfWeek-${index}`}
+                  name="dayOfWeek"
+                  label="Day of Week"
+                  value={day.label}
+                  checked={hours.dayOfWeek.includes(day.label)}
+                  onChange={handleHoursChange}
+                />
+              }
+              label={day.label}
             />
           ))}
-          </div>
 
-          <Input
+          <TextField
             id="startDate"
-            title="Start Date"
+            label="Start Date"
             type="date"
-            className="form-control"
             name="startDate"
             value={hours.startDate}
             onChange={handleHoursChange}
+            required
+            fullWidth
+            margin="dense"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              "data-testid": "start-date-input",
+            }}
           />
           
-          <Input
+          <TextField
             id="endDate"
-            title="End Date"
+            label="End Date"
             type="date"
-            className="form-control"
             name="endDate"
             value={hours.endDate}
             onChange={handleHoursChange}
+            required
+            fullWidth
+            margin="dense"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              "data-testid": "end-date-input",
+            }}
           />
 
-          <TimeSelect
+          <TextField
             id="openTime"
-            title="Open Time"
+            label="Open Time"
+            type="time"
             name="openTime"
-            className="form-control"
             value={hours.openTime}
             onChange={handleHoursChange}
-            optionDefault="Select Open Time"
-            options={timeOptions()}
+            required
+            fullWidth
+            margin="dense"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: 300,
+              "data-testid": "open-time-input",
+            }}
           />
 
-          <TimeSelect
+          <TextField
             id="closeTime"
-            title="Close Time"
+            label="Close Time"
+            type="time"
             name="closeTime"
-            className="form-control"
             value={hours.closeTime}
             onChange={handleHoursChange}
-            optionDefault="Select Close Time"
-            options={timeOptions()}
+            required
+            fullWidth
+            margin="dense"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            inputProps={{
+              step: 300,
+              "data-testid": "close-time-input",
+            }}
           />
 
-          {error && <div className="alert alert-danger">{error}</div>}
-          <button type="submit" className="btn btn-primary">
+          {error && <Alert severity="error">{error}</Alert>}
+          <Button type="submit" variant="contained" color="primary">
             Add
-          </button>
+          </Button>
         </form>
       ) : (
-        <p>No Buildings are registered.</p>
+        <Typography variant="subtitle1" gutterBottom>
+          No Buildings are registered.
+        </Typography>
       )}
-    </div>
-  );
+    </Box>
+   );
 };
 
 export default AddHours;

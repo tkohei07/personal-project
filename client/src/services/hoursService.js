@@ -9,7 +9,7 @@ const hoursService = {
     }
   },
 
-  addHours: (hoursObject) => {
+  addHours: async (hoursObject) => {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -18,20 +18,19 @@ const hoursService = {
       body: JSON.stringify(hoursObject),
     };
 
-    return fetch(`${process.env.REACT_APP_BACKEND}/api/add-hours`, requestOptions)
-      .then(async response => {
-        const data = await response.json();
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/add-hours`, requestOptions);
+      const data = await response.json();
 
-        if (!response.ok) {
-          throw new Error(`Failed to add hours: ${data.error}`);
-        }
+      if (!response.ok) {
+        throw new Error(`Failed to add hours: ${data.error}`);
+      }
 
-        return data;
-      })
-      .catch(err => {
-        console.error('Error:', err);
-        throw err;
-      });
+      return data;
+    } catch (err) {
+      console.error('Error:', err);
+      throw err;
+    }
   },
 
   deleteHour: async (id) => {

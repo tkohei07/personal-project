@@ -1,7 +1,12 @@
 import { Link, Outlet } from 'react-router-dom';
 import { LoadScript } from "@react-google-maps/api";
-
 import { useUser } from './contexts/UserContext';
+import './styles/App.css';
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/system/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import { VpnKey as VpnKeyIcon, ExitToApp as ExitToAppIcon } from '@mui/icons-material';
 
 function App() {
   const { loggedIn, setLoggedIn } = useUser();
@@ -15,56 +20,37 @@ function App() {
 
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey}>
-    <div className="container">
-      <div className="row">
-        <div className="col">
-          <h1 className="mt-3">Let's find the place where you can study</h1>
-          <div className="col text-end">
-            {loggedIn ? (
-              <button onClick={handleLogout}>
-                <span className="badge bg-success">Logout</span>
-              </button>
-            ) : (
-              <Link to="/login">
-                <span className="badge bg-success">Login</span>
-              </Link>
+      <Box sx={{ m: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Tabs>
+            <Tab label="Home" component={Link} to="/" />
+            {loggedIn && (
+              <>
+                <Tab label="Add Building" component={Link} to="/add-building" />
+                <Tab label="Add Hours" component={Link} to="/add-hours" />
+                <Tab label="My Buildings" component={Link} to="/my-favorite-buildings" />
+                <Tab label="My Reviews" component={Link} to="/my-reviews" />
+              </>
             )}
-          </div>
-        </div>
-        <hr className="mb-3"></hr>
-      </div>
+          </Tabs>
 
-      <div className="row">
-        <div className="col-md-2">
-          <nav>
-            <div className="list-group">
-              <Link to="/" className="list-group-item list-group-item-action">
-                Home
-              </Link>
-              {loggedIn && (
-                <>
-                  <Link to="/add-building" className="list-group-item list-group-item-action">
-                    Add Building
-                  </Link>
-                  <Link to="/add-hours" className="list-group-item list-group-item-action">
-                    Add Hours
-                  </Link>
-                  <Link to="/my-favorite-buildings" className="list-group-item list-group-item-action">
-                    My Buildings
-                  </Link>
-                  <Link to="/my-reviews" className="list-group-item list-group-item-action">
-                    My Reviews
-                  </Link>
-                </>
-              )}
-            </div>
-          </nav>
-        </div>
-        <div className="col-md-10">
+          {loggedIn ? (
+            <IconButton onClick={handleLogout} color="primary">
+              <ExitToAppIcon />
+            </IconButton>
+          ) : (
+            <Link to="/login">
+              <IconButton color="primary">
+                <VpnKeyIcon />
+              </IconButton>
+            </Link>
+          )}
+        </Box>
+        <div className="custom-container">
           <Outlet />
         </div>
-      </div>
-    </div>
+
+      </Box>
     </LoadScript>
   );
 }

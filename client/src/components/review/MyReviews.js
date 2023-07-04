@@ -3,6 +3,15 @@ import { FaStar } from "react-icons/fa";
 import { useUser } from '../../contexts/UserContext';
 import { useFetchReviewsByUserId } from '../../hooks/reviews/useFetchReviews';
 import useDeleteReview from '../../hooks/reviews/useDeleteReview';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const MyReviews = () => {
   const { userId } = useUser();
@@ -20,38 +29,54 @@ const MyReviews = () => {
   };
 
   return (
-    <div>
-      <h2>My Reviews</h2>
+    <Box sx={{ m: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        My Reviews
+      </Typography>
       <hr />
-      {reviews && reviews.length > 0 ? (
-        reviews.map((review) => (
-          <div key={review.id}>
-            <div>
-              {[...Array(5)].map((star, i) => {
-                const ratingValue = i + 1;
-                return (
-                  <label key={i}>
-                    <FaStar
-                      size={15}
-                      color={ratingValue <= review.rating ? "#ffc107" : "#e4e5e9"}
-                    />
-                  </label>
-                );
-              })}
-              <span style={{ marginLeft: "15px", fontSize: "0.8em" }}>{new Date(review.updatedAt).toLocaleDateString()}</span>
-            </div>
-          <p>Review for {review.buildingName}</p>
-          <p>{review.comment}</p>
-          <button onClick={() => handleDelete(review.id)}>Delete</button>
-          <br />
-          </div>
-        ))
-      ) : (
-        <p>You haven't made any reviews yet.</p>
-      )}
-
-    </div>
-  )
-}
+      <List>
+        {reviews && reviews.length > 0 ? (
+          reviews.map((review) => (
+            <ListItem key={review.id}>
+              <Box>
+                <Typography variant="subtitle1">
+                  Review for {review.buildingName}
+                </Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  {[...Array(5)].map((star, i) => {
+                    const ratingValue = i + 1;
+                    return (
+                      <label key={i}>
+                        <FaStar
+                          size={15}
+                          color={ratingValue <= review.rating ? "#ffc107" : "#e4e5e9"}
+                        />
+                      </label>
+                    );
+                  })}
+                  <Typography variant="subtitle2" sx={{ ml: 1, fontSize: '0.8em' }}>
+                    {new Date(review.updatedAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+                <Typography variant="body1" sx={{ mt: 1 }}>
+                  {review.comment}
+                </Typography>
+              </Box>
+              <ListItemSecondaryAction>
+                <IconButton edge="end" onClick={() => handleDelete(review.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))
+        ) : (
+          <Typography variant="subtitle1">
+            You haven't made any reviews yet.
+          </Typography>
+        )}
+      </List>
+    </Box>
+  );
+};
 
 export default MyReviews;
