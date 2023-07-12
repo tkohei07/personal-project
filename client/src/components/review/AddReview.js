@@ -18,7 +18,6 @@ const AddReview = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const { userId } = useUser();
   const { addReview, error } = useAddReview(id, userId);
-  console.log("userId: ", userId);
 
   const handleRatingChange = (starValue) => {
     setRating(starValue);
