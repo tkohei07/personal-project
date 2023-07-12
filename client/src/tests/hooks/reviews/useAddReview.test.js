@@ -37,9 +37,7 @@ describe("useAddReview hook", () => {
     );
 
     fireEvent.click(getByText("Add review"));
-
     await act(() => Promise.resolve()); 
-
     expect(await findByText("Test error")).toBeInTheDocument();
   });
 });

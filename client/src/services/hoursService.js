@@ -28,7 +28,6 @@ const hoursService = {
 
       return data;
     } catch (err) {
-      console.error('Error:', err);
       throw err;
     }
   },

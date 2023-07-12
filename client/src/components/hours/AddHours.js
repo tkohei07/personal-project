@@ -125,6 +125,10 @@ const AddHours = () => {
             onChange={handleBuildingChange}
             fullWidth
             margin="dense"
+            role="listbox"
+            inputProps={{
+              "data-testid": "building-select",
+            }}
           >
             {buildings.map((building, index) => (
               <MenuItem key={index} value={building.id}>{building.name}</MenuItem>

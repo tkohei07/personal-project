@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 
 const Reviews = () => {
   const { id } = useParams();
@@ -29,36 +28,30 @@ const Reviews = () => {
         ) : (
           reviews.map(review => (
             <ListItem key={review.id}>
-              <ListItemText
-                primary={
-                  <Typography variant="h5">
-                    {review.username}
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="h5">
+                  {review.username}
+                </Typography>
+                <Box display="flex" alignItems="center">
+                  {[...Array(5)].map((star, i) => {
+                    const ratingValue = i + 1;
+                    return (
+                      <label key={i}>
+                        <FaStar
+                          size={15}
+                          color={ratingValue <= review.rating ? "#ffc107" : "#e4e5e9"}
+                        />
+                      </label>
+                    );
+                  })}
+                  <Typography variant="body2" sx={{ ml: 2, fontSize: "0.8em" }}>
+                    {new Date(review.updatedAt).toLocaleDateString()}
                   </Typography>
-                }
-                secondary={
-                  <Box>
-                    <Box display="flex" alignItems="center">
-                      {[...Array(5)].map((star, i) => {
-                        const ratingValue = i + 1;
-                        return (
-                          <label key={i}>
-                            <FaStar
-                              size={15}
-                              color={ratingValue <= review.rating ? "#ffc107" : "#e4e5e9"}
-                            />
-                          </label>
-                        );
-                      })}
-                      <Typography variant="subtitle1" sx={{ ml: 2, fontSize: "0.8em" }}>
-                        {new Date(review.updatedAt).toLocaleDateString()}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body1" sx={{ mt: 1 }}>
-                      {review.comment}
-                    </Typography>
-                  </Box>
-                }
-              />
+                </Box>
+                <Typography variant="body2" sx={{ mt: 1 }}>
+                  {review.comment}
+                </Typography>
+              </Box>
             </ListItem>
           ))
         )}

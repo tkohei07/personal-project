@@ -51,9 +51,7 @@ describe("useAddBuilding hook", () => {
 
   it("sets error state when adding a building fails", async () => {
     buildingsService.addBuilding.mockRejectedValue(new Error("Test error"));
-
     const { getByRole, findByText } = render(<TestComponent />);
-
     fireEvent.click(getByRole("button", { name: "Add Building" }));
 
     expect(await findByText("Test error")).toBeInTheDocument();
