@@ -56,5 +56,17 @@ CREATE TABLE IF NOT EXISTS reviews (
 
 INSERT INTO buildings (name, address, link, is_computer_room, is_reservable_study_room, is_vending_area) 
 VALUES 
+    ('AMP Library', '4220 Chamberlin Hall 1150 University Ave. Madison WI 53706', 'https://www.library.wisc.edu/amp/', false, false, false),
+    ('AOSS Library', '1225 W. Dayton St. Madison WI 53706', 'https://library.ssec.wisc.edu/', false, false, true),
+    ('Art Library', '1800 Engineering Dr. Madison WI 53706', 'https://www.library.wisc.edu/art/', false, false, true),
+    ('Business Library', '975 University Ave. Madison WI 53706', 'https://www.library.wisc.edu/business', true, true, true),
+    ('College Library', '600 N. Park St. Madison WI 53706', 'https://www.library.wisc.edu/college/', true, true, true),
     ('Ebling Library', 'Health Sciences Learning Center 750 Highland Ave. Madison WI 53705', 'https://ebling.library.wisc.edu/', true, false, true),
-    ('Steenbock Library', '550 Babcock Dr. Madison WI 53706', 'https://www.library.wisc.edu/steenbock/', false, true, true);
+    ('Geology and Geophysics Library', '1215 W. Dayton St. Madison WI 53706', 'https://www.library.wisc.edu/geology', false, false, true),
+    ('Law Library', '975 Bascom Mall Madison WI 53706', 'https://library.law.wisc.edu/', true, true, false),
+    ('Memorial Library', '728 State St. Madison WI 53706', 'https://www.library.wisc.edu/memorial', true, true, true),
+    ('MERIT Library', '225 N. Mills St. Madison WI 53706', 'https://merit.education.wisc.edu/', false, false, true),
+    ('Social Work Library', '1350 University Ave. Madison WI 53706', 'https://www.library.wisc.edu/socialwork', false, false, true),
+    ('Special Collections', '976 Memorial Library 728 State St. Madison WI 53706', 'https://www.library.wisc.edu/specialcollections/', false, false, false),
+    ('Steenbock Library', '550 Babcock Dr. Madison WI 53706', 'https://www.library.wisc.edu/steenbock/', false, true, true),
+    ('Wisconsin Water Library', '1975 Willow Dr. Madison WI 53706', 'https://waterlibrary.aqua.wisc.edu/', false, false, false);
