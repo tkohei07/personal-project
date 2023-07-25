@@ -21,7 +21,7 @@ const buildingsService = {
 
   fetchBuildingsWithTodayHours: async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKD}/api/buildings`);
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/api/buildings`);
       return await response.json();
     } catch (error) {
       console.error(error);
