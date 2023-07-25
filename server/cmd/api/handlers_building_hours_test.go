@@ -82,8 +82,27 @@ func TestGetBuildingHoursBuildingByIDHandler(t *testing.T) {
 	var returnedBuildingHours []*models.BuildingHour
 	err := json.Unmarshal(resp.Body.Bytes(), &returnedBuildingHours)
 	assert.NoError(t, err)
-	assert.Equal(t, expectedBuildingHours, returnedBuildingHours)
 
+	// Custom comparison function for BuildingHour
+	compareBuildingHours := func(expected, actual *models.BuildingHour) {
+		assert.Equal(t, expected.ID, actual.ID)
+		assert.Equal(t, expected.BuildingID, actual.BuildingID)
+		assert.Equal(t, expected.DayOfWeek, actual.DayOfWeek)
+		assert.True(t, expected.StartDate.Equal(actual.StartDate))
+		assert.True(t, expected.EndDate.Equal(actual.EndDate))
+		assert.True(t, expected.OpenTime.Equal(actual.OpenTime))
+		assert.True(t, expected.CloseTime.Equal(actual.CloseTime))
+		assert.Equal(t, expected.OpenTimeStr, actual.OpenTimeStr)
+		assert.Equal(t, expected.CloseTimeStr, actual.CloseTimeStr)
+	}
+
+	// Ensure lengths are the same
+	assert.Equal(t, len(expectedBuildingHours), len(returnedBuildingHours))
+
+	// Compare each BuildingHour individually
+	for i := range expectedBuildingHours {
+		compareBuildingHours(expectedBuildingHours[i], returnedBuildingHours[i])
+	}
 }
 
 func TestGetBuildingHoursBuildingByIDHandler_DBError(t *testing.T) {
