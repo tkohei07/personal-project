@@ -1,4 +1,3 @@
-# FROM golang:1.19-alpine
 FROM golang:1.19
 
 WORKDIR /usr/local/go/src/app
