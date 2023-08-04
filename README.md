@@ -1,12 +1,12 @@
-# StudySpot: Discover and Share the Best Study Locations
-StudySpot is a unique web application crafted to assist students and self-learners in finding the ideal place for study. Be it the serene ambiance of a library or the vivacious energy of a café, our database of study locations, enriched by contributions from our users, makes it convenient for you to uncover new and effective study spots.
+# LearnLocale: Connect with Your Ideal Study Environment
+LearnLocale is a unique web application crafted to assist students and self-learners in finding the ideal place for study. Be it the serene ambiance of a library or the vivacious energy of a café, our database of study locations, enriched by contributions from our users, makes it convenient for you to uncover new and effective study spots.
 
 As a registered user, your contributions to the community are invaluable. Add new locations, specify their operating hours, and bookmark your favorite spots. You can also craft and share reviews, assisting others in finding the ideal spot.
 
 For those without an account, you can still delve into the extensive information our community has to offer. Peruse various locations, their hours of operation, and read reviews to decide on your next study retreat.
 
 ## Tech Stack
-StudySpot boasts a blend of various technologies:
+LearnLocale boasts a blend of various technologies:
 
 - React (SPA): The user interface is a Single Page Application (SPA) crafted using React, offering dynamic updates and reduced page reloads for a seamless user experience.
 - Jest: Employed as the testing framework for React.
