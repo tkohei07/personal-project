@@ -1,8 +1,10 @@
 FROM node:18-alpine
 
 RUN mkdir -p /usr/src/app
-
 WORKDIR /usr/src/app
+
+ARG REACT_APP_GOOGLEMAPS_API_KEY
+ENV REACT_APP_GOOGLEMAPS_API_KEY=$REACT_APP_GOOGLEMAPS_API_KEY
 
 RUN npm install react-router-dom react-icons react-rating @react-google-maps/api @mui/material @mui/icons-material @mui/system @emotion/react @emotion/styled
     
