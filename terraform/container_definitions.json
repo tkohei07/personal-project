@@ -25,7 +25,7 @@
     ],
     "environment": [
       {
-        "name": "GOOGLEMAPS_API_KEY",
+        "name": "REACT_APP_GOOGLEMAPS_API_KEY",
         "value": "${googlemaps_api_key}"
       }
     ],
