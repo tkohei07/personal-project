@@ -1,5 +1,5 @@
 # LearnLocale: Connect with Your Ideal Study Environment
-LearnLocale is a unique web application crafted to assist students and self-learners in finding the ideal place for study. Be it the serene ambiance of a library or the vivacious energy of a café, our database of study locations, enriched by contributions from our users, makes it convenient for you to uncover new and effective study spots.
+LearnLocale is a web application crafted to assist students and self-learners in finding the ideal place for study. Be it the serene ambiance of a library or the vivacious energy of a café, our database of study locations, enriched by contributions from our users, makes it convenient for you to uncover new and effective study spots.
 
 As a registered user, your contributions to the community are invaluable. Add new locations, specify their operating hours, and bookmark your favorite spots. You can also craft and share reviews, assisting others in finding the ideal spot.
 
