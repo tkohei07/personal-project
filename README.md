@@ -39,7 +39,9 @@ To have a local copy up and running, adhere to the following steps:
 
 `npm install` 
 
-4. To initiate the application locally with Docker, execute:
+4. Set the .env.local file that includes REACT_APP_BACKEND and REACT_APP_GOOGLEMAPS_API_KEY.
+
+5. To initiate the application locally with Docker, execute:
 
 `docker-compose up` 
 
