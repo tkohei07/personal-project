@@ -20,6 +20,10 @@ LearnLocale boasts a blend of various technologies:
 - Terraform: Streamlines the provisioning process of our cloud infrastructure.
 - GitHub Actions & CI/CD: Automates the development workflows, including testing and deployment.
 
+## Infrastructure Architecture
+Below is the infrastructure architecture diagram for LearnLocale. This diagram illustrates how the different technologies and services are orchestrated to support the application's infrastructure:
+![Infrastructure Architecture Diagram](infrastructure-architecture-diagram.png)
+
 ## Getting Started
 To have a local copy up and running, adhere to the following steps:
 
@@ -39,7 +43,9 @@ To have a local copy up and running, adhere to the following steps:
 
 `npm install` 
 
-4. Set the .env.local file that includes REACT_APP_BACKEND and REACT_APP_GOOGLEMAPS_API_KEY.
+4. Set the .env.local file that includes...
+- REACT_APP_BACKEND=http://localhost:8080
+- REACT_APP_GOOGLEMAPS_API_KEY=(your own API key if you want).
 
 5. To initiate the application locally with Docker, execute:
 
