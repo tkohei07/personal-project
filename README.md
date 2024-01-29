@@ -22,6 +22,7 @@ LearnLocale boasts a blend of various technologies:
 
 ## Infrastructure Architecture
 Below is the infrastructure architecture diagram for LearnLocale. This diagram illustrates how the different technologies and services are orchestrated to support the application's infrastructure:
+
 ![Infrastructure Architecture Diagram](infrastructure-architecture-diagram.png)
 
 ## Getting Started
