@@ -15,7 +15,7 @@ func LoadConfig(env string) Config {
 	switch env {
 	case "production":
 		cfg.DSN = os.Getenv("PROD_DSN")
-		cfg.InitSQL = "init_dev.sql"
+		cfg.InitSQL = "init_prod.sql"
 	case "development":
 		cfg.DSN = os.Getenv("DEV_DSN")
 		cfg.InitSQL = "init_dev.sql"
