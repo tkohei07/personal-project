@@ -65,7 +65,7 @@ resource "aws_db_instance" "this" {
   identifier = local.name
 
   engine            = "postgres"
-  engine_version    = "13.7"
+  engine_version    = "13.13"
   instance_class    = "db.t3.small"
   allocated_storage = 20
 
