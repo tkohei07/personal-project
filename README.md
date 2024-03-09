@@ -20,6 +20,7 @@ LearnLocale boasts a blend of various technologies:
 - RDS: Powers our cloud-based PostgreSQL database.
 - Terraform: Streamlines the provisioning process of our cloud infrastructure.
 - GitHub Actions & CI/CD: Automates the development workflows, including testing and deployment.
+- Nginx: Serves as a HTTP server and reverse proxy, enhancing security and efficiency by handling static content and routing traffic.
 
 ## Infrastructure Architecture
 Below is the infrastructure architecture diagram for LearnLocale. This diagram illustrates how the different technologies and services are orchestrated to support the application's infrastructure:
